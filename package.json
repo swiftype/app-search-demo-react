@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "ora": "^2.1.0",
+    "package-stream": "^3.0.1",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "react-scripts": "1.1.4"
@@ -14,7 +16,8 @@
     "eject": "react-scripts eject",
     "format": "prettier src/**/*.{js,css} --write",
     "lint": "eslint **/*.js",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "init-data": "node scripts/init-data.js"
   },
   "lint-staged": {
     "src/**/*.{js,css}": ["prettier --write", "git add"]
