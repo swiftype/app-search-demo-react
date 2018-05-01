@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import { Input } from "rebass";
+import { Input, Provider } from "rebass";
 import styled from "styled-components";
+
+import Results from "./Results";
 
 const HeaderBar = styled.div`
   color: rgb(255, 255, 255);
@@ -32,6 +34,7 @@ const Body = styled.div`
   display: flex;
   justify-content: center;
   padding-top: 20px;
+  font-family: "Roboto", sans-serif;
 `;
 
 const BodyInner = styled.div`
@@ -42,17 +45,27 @@ const BodyInner = styled.div`
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <HeaderBar>
-          <HeaderBarInner>
-            <Title>Node Module Search</Title>
-            <StyledInput />
-          </HeaderBarInner>
-        </HeaderBar>
-        <Body>
-          <BodyInner>Results go here</BodyInner>
-        </Body>
-      </div>
+      <Provider
+        theme={{
+          fonts: {
+            sans: '"Roboto", sans-serif'
+          }
+        }}
+      >
+        <div className="App">
+          <HeaderBar>
+            <HeaderBarInner>
+              <Title>Node Module Search</Title>
+              <StyledInput />
+            </HeaderBarInner>
+          </HeaderBar>
+          <Body>
+            <BodyInner>
+              <Results />
+            </BodyInner>
+          </Body>
+        </div>
+      </Provider>
     );
   }
 }
