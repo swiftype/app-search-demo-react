@@ -34,4 +34,4 @@ yarn run init-data
 yarn run index-data
 ```
 
-After you've indexed all of your data, you'll need to go into the Admin panel in App Search and define types for your Schema. The only changes we'll need to is change our two data fields, `created` and `modified` to "Date" types.
+After you've indexed all of your data, you'll need to go into the Admin panel in App Search and define types for your Schema. The only changes we'll need to is change our two date fields, `created` and `modified` to "Date" types.
