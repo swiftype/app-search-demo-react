@@ -14,17 +14,46 @@ const modules = [];
 
 function handlePackage(pkg) {
   const name = pkg.name;
-  if (name && name.length) modules.push(pkg);
+  if (name && name.length) modules.push(format(pkg));
 
   //We'll just grab the first 10k packages, for this demo.
-  if (modules.length > 10000) handleUpToDate();
+  if (modules.length >= 10000) handleUpToDate();
+}
+
+function format(pkg) {
+  let {
+    name,
+    versionname,
+    descriptionname,
+    homepagename,
+    createdname,
+    modifiedname,
+    preferGlobal,
+    keywords,
+    repository,
+    owners,
+    dependencies
+  } = pkg;
+  return {
+    name,
+    versionname,
+    descriptionname,
+    homepagename,
+    createdname,
+    modifiedname,
+    preferGlobal,
+    keywords,
+    repository,
+    owners: (owners || []).map(o => o.email),
+    dependencies: Object.keys(dependencies || {})
+  };
 }
 
 function handleUpToDate() {
   const filename = path.join(__dirname, "../data/node-modules.json");
 
   fs.writeFileSync(filename, JSON.stringify(modules, null, 2));
-  console.log(`\nwrote ${modules.length} package names to ${filename}`);
+  console.log(`\nwrote ${modules.length} packages to ${filename}`);
   process.exit();
 }
 

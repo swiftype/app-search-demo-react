@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "dotenv": "^5.0.1",
     "ora": "^2.1.0",
     "package-stream": "^3.0.1",
     "react": "^16.3.2",
@@ -17,7 +18,8 @@
     "format": "prettier src/**/*.{js,css} --write",
     "lint": "eslint **/*.js",
     "precommit": "lint-staged",
-    "init-data": "node scripts/init-data.js"
+    "init-data": "node scripts/init-data.js",
+    "index-data": "node scripts/index-data.js"
   },
   "lint-staged": {
     "src/**/*.{js,css}": ["prettier --write", "git add"]
@@ -27,6 +29,7 @@
     "eslint-plugin-prettier": "^2.6.0",
     "husky": "^0.14.3",
     "lint-staged": "^7.0.5",
-    "prettier": "1.12.1"
+    "prettier": "1.12.1",
+    "swiftype-app-search-node": "^0.1.1"
   }
 }
