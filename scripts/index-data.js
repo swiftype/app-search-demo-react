@@ -12,10 +12,21 @@ try {
   process.exit(1);
 }
 
+const getUrlFunction = () => {
+  if (process.env.APP_SEARCH_STATIC_HOST) {
+    return accountHostKey => {
+      return `${process.env.APP_SEARCH_STATIC_HOST}/api/as/v1/`;
+    };
+  }
+};
 const SwiftypeAppSearchClient = require("swiftype-app-search-node");
 const accountHostKey = process.env.APP_SEARCH_HOST_KEY;
 const apiKey = process.env.APP_SEARCH_API_KEY;
-const client = new SwiftypeAppSearchClient(accountHostKey, apiKey);
+const client = new SwiftypeAppSearchClient(
+  accountHostKey,
+  apiKey,
+  getUrlFunction()
+);
 
 function indexDocumentsInBatches(client, engineName, documents) {
   const concurrency = 20;

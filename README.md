@@ -4,6 +4,8 @@ Example of a React application using Swiftype App Search to build a search inter
 
 ## Setup
 
+### Set up an Engine in App Search
+
 Before setting this project up, you will need to create a new Engine on Swiftype App Search called
 `node-modules`.
 
@@ -16,7 +18,7 @@ APP_SEARCH_HOST_KEY=host-1212121
 APP_SEARCH_API_KEY=api-12121212121211212
 ```
 
-### Running the app
+### Push data to your App Search Engine
 
 ```
 # Clone the repository
@@ -35,3 +37,9 @@ yarn run index-data
 ```
 
 After you've indexed all of your data, you'll need to go into the Admin panel in App Search and define types for your Schema. The only changes we'll need to is change our two date fields, `created` and `modified` to "Date" types.
+
+### Run the search app
+
+```
+yarn start
+```
