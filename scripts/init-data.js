@@ -23,11 +23,11 @@ function handlePackage(pkg) {
 function format(pkg) {
   let {
     name,
-    versionname,
-    descriptionname,
-    homepagename,
-    createdname,
-    modifiedname,
+    version,
+    description,
+    homepage,
+    created,
+    modified,
     preferGlobal,
     keywords,
     repository,
@@ -35,12 +35,13 @@ function format(pkg) {
     dependencies
   } = pkg;
   return {
+    id: name, // It needs a unique "id", otherwise when we re-index a new record will be created.
     name,
-    versionname,
-    descriptionname,
-    homepagename,
-    createdname,
-    modifiedname,
+    version,
+    description,
+    homepage,
+    created,
+    modified,
     preferGlobal,
     keywords,
     repository,
