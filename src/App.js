@@ -1,8 +1,10 @@
 import React, { Component } from "react";
-import { Input, Provider } from "rebass";
+import { Input, Provider as ThemeProvider } from "rebass";
 import styled from "styled-components";
 
 import Results from "./Results";
+import Search from "./Search";
+import logo from "./logo.svg";
 
 const HeaderBar = styled.div`
   color: rgb(255, 255, 255);
@@ -33,8 +35,8 @@ const Title = styled.div`
 const Body = styled.div`
   display: flex;
   justify-content: center;
-  padding-top: 20px;
   font-family: "Roboto", sans-serif;
+  padding: 20px;
 `;
 
 const BodyInner = styled.div`
@@ -42,30 +44,43 @@ const BodyInner = styled.div`
   max-width: 1024px;
 `;
 
+const Logo = styled.img`
+  height: 40px;
+  margin-right: 10px;
+`;
+
 class App extends Component {
   render() {
     return (
-      <Provider
+      <ThemeProvider
         theme={{
           fonts: {
             sans: '"Roboto", sans-serif'
           }
         }}
       >
-        <div className="App">
-          <HeaderBar>
-            <HeaderBarInner>
-              <Title>Node Module Search</Title>
-              <StyledInput />
-            </HeaderBarInner>
-          </HeaderBar>
-          <Body>
-            <BodyInner>
-              <Results />
-            </BodyInner>
-          </Body>
-        </div>
-      </Provider>
+        <Search>
+          {({ results, query, updateQuery }) => (
+            <div className="App">
+              <HeaderBar>
+                <HeaderBarInner>
+                  <Logo src={logo} alt="logo" />
+                  <Title>Module Search</Title>
+                  <StyledInput
+                    value={query}
+                    onChange={e => updateQuery(e.target.value)}
+                  />
+                </HeaderBarInner>
+              </HeaderBar>
+              <Body>
+                <BodyInner>
+                  <Results results={results} />
+                </BodyInner>
+              </Body>
+            </div>
+          )}
+        </Search>
+      </ThemeProvider>
     );
   }
 }

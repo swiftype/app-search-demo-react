@@ -4,12 +4,14 @@
   "private": true,
   "dependencies": {
     "dotenv": "^5.0.1",
+    "lodash": "^4.17.10",
     "ora": "^2.1.0",
     "package-stream": "^3.0.1",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "react-scripts": "1.1.4",
-    "rebass": "^2.0.0-0"
+    "rebass": "^2.0.0-0",
+    "swiftype-app-search-javascript": "../swiftype-app-search-javascript/"
   },
   "scripts": {
     "start": "react-scripts start",

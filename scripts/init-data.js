@@ -16,7 +16,8 @@ function handlePackage(pkg) {
   const name = pkg.name;
   if (name && name.length) modules.push(format(pkg));
 
-  //We'll just grab the first 10k packages, for this demo.
+  // You could uncomment this in order to download ALL npm packages (~650,000), but the process will take
+  // significantly longer to run.
   if (modules.length >= 10000) handleUpToDate();
 }
 
@@ -35,7 +36,9 @@ function format(pkg) {
     dependencies
   } = pkg;
   return {
-    id: name, // It needs a unique "id", otherwise when we re-index a new record will be created.
+    // Even if your document doesn't have a unique "id", it's a good idea to specify one when indexing documents.
+    // If you send a document for re-indexing and it doesn't include an id, it will be seen as a new document.
+    id: name,
     name,
     version,
     description,

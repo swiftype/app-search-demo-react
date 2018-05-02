@@ -28,6 +28,12 @@ const client = new SwiftypeAppSearchClient(
   getUrlFunction()
 );
 
+/*
+  `client.indexDocuments` will only accept 100 documents at a time, so we index
+  our data set in batches. The following is a very simple batching function, which
+  allows for has a configurable `concurrency` variable, which allows for faster
+  indexing.
+*/
 function indexDocumentsInBatches(client, engineName, documents) {
   const concurrency = 20;
   const size = 100;
