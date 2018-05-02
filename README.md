@@ -22,11 +22,12 @@ Before setting up this project, you will need to create a new Engine on [Swiftyp
 You'll then need to configure this project to point to your newly created Engine, so create a `.env` file at the root of this project using the following format:
 
 ```
-APP_SEARCH_HOST_KEY=
-APP_SEARCH_API_KEY=
+REACT_APP_HOST_KEY=
+REACT_APP_API_KEY=
+REACT_APP_SEARCH_KEY=
 ```
 
-From within the Engine Dashbord, navigate to "Access > API Keys". Enter the "Account Host Key" and "api-key" values from that screen as values in the `.env` file, respectively.
+From within the Engine Dashbord, navigate to "Access > API Keys". Enter the "Account Host Key", "api-key", and "search-key" values from that screen as values in the `.env` file, respectively.
 
 ### Push data to the `node-modules` Engine
 

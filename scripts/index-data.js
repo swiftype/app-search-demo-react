@@ -13,15 +13,15 @@ try {
 }
 
 const getUrlFunction = () => {
-  if (process.env.APP_SEARCH_STATIC_HOST) {
+  if (process.env.REACT_APP_STATIC_SEARCH_HOST) {
     return accountHostKey => {
-      return `${process.env.APP_SEARCH_STATIC_HOST}/api/as/v1/`;
+      return `${process.env.REACT_APP_STATIC_SEARCH_HOST}/api/as/v1/`;
     };
   }
 };
 const SwiftypeAppSearchClient = require("swiftype-app-search-node");
-const accountHostKey = process.env.APP_SEARCH_HOST_KEY;
-const apiKey = process.env.APP_SEARCH_API_KEY;
+const accountHostKey = process.env.REACT_APP_HOST_KEY;
+const apiKey = process.env.REACT_APP_SEARCH_KEY;
 const client = new SwiftypeAppSearchClient(
   accountHostKey,
   apiKey,

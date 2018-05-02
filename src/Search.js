@@ -26,8 +26,8 @@ export default class Search extends Component {
 
   updateResults = debounce(query => {
     var client = SwiftypeAppSearch.createClient({
-      accountHostKey: "host-n16af4",
-      apiKey: "search-ow8h58jvykmoc96whnnfhv69",
+      accountHostKey: process.env.REACT_APP_HOST_KEY,
+      apiKey: process.env.REACT_APP_API_KEY,
       engineName: "node-modules"
     });
 
