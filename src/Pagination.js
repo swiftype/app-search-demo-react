@@ -1,6 +1,8 @@
 import React from "react";
 import { ButtonCircle } from "rebass";
 import styled from "styled-components";
+import RCPagination from "rc-pagination";
+import "rc-pagination/assets/index.css";
 
 const Container = styled.div`
   padding: 20px 0;
@@ -17,18 +19,11 @@ export default function Pagination({
 }) {
   return (
     <Container>
-      <ButtonCircle
-        onClick={() => onPage(currentPage - 1)}
-        disabled={currentPage <= 1}
-      >
-        Previous
-      </ButtonCircle>
-      <ButtonCircle
-        onClick={() => onPage(currentPage + 1)}
-        disabled={currentPage >= totalPages}
-      >
-        Next
-      </ButtonCircle>
+      <RCPagination
+        current={currentPage}
+        total={totalPages}
+        onChange={onPage}
+      />
     </Container>
   );
 }
