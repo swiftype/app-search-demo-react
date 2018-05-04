@@ -77,32 +77,44 @@ export default class Search extends Component {
       query
     });
 
-    this.updateResults(query);
+    this.updateResults(query, 1);
   };
 
-  updateResults = debounce(query => {
+  updatePage = newPage => {
+    this.updateResults(this.state.query, newPage);
+  };
+
+  updateResults = debounce((query, page) => {
     var client = SwiftypeAppSearch.createClient({
       accountHostKey: process.env.REACT_APP_HOST_KEY,
       apiKey: process.env.REACT_APP_API_KEY,
       engineName: "node-modules"
     });
 
-    client.search(query, QUERY_OPTIONS).then(
-      resultList => {
-        this.setState({
-          results: resultList.results,
-          pageState: {
-            currentPage: resultList.info.meta.page.current,
-            pageSize: resultList.info.meta.page.size,
-            totalPages: resultList.info.meta.page.total_pages,
-            totalResults: resultList.info.meta.page.total_results
-          }
-        });
-      },
-      error => {
-        console.log(`error: ${error}`);
-      }
-    );
+    client
+      .search(query, {
+        ...QUERY_OPTIONS,
+        page: {
+          size: 10,
+          current: page
+        }
+      })
+      .then(
+        resultList => {
+          this.setState({
+            results: resultList.results,
+            pageState: {
+              currentPage: resultList.info.meta.page.current,
+              pageSize: resultList.info.meta.page.size,
+              totalPages: resultList.info.meta.page.total_pages,
+              totalResults: resultList.info.meta.page.total_results
+            }
+          });
+        },
+        error => {
+          console.log(`error: ${error}`);
+        }
+      );
   }, 200);
 
   componentDidMount() {
@@ -116,6 +128,7 @@ export default class Search extends Component {
       pageState,
       query,
       results,
+      updatePage: this.updatePage,
       updateQuery: this.updateQuery
     });
   }

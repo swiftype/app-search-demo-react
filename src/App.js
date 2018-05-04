@@ -3,6 +3,7 @@ import { Input, Provider as ThemeProvider } from "rebass";
 import styled from "styled-components";
 
 import logo from "./logo.svg";
+import Pagination from "./Pagination";
 import Results from "./Results";
 import Search from "./Search";
 import Totals from "./Totals";
@@ -61,7 +62,7 @@ class App extends Component {
         }}
       >
         <Search>
-          {({ query, results, pageState, updateQuery }) => (
+          {({ query, results, pageState, updatePage, updateQuery }) => (
             <div className="App">
               <HeaderBar>
                 <HeaderBarInner>
@@ -77,6 +78,7 @@ class App extends Component {
                 <BodyInner>
                   <Totals {...pageState} />
                   <Results results={results} />
+                  <Pagination {...pageState} onPage={updatePage} />
                 </BodyInner>
               </Body>
             </div>
