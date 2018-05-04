@@ -60,7 +60,6 @@ export default function Results({ results }) {
     <StyledResults>
       {results.map(result => (
         <Result key={getRaw(result, "name")}>
-          {console.log(result)}
           <Panel.Header color="white" bg="#7F7F7F">
             <StyledLink
               target="_blank"
@@ -97,7 +96,7 @@ export default function Results({ results }) {
                   values //values.join(",")
                 ) =>
                   values.map(value => (
-                    <LinkContainer>
+                    <LinkContainer key={value}>
                       <a
                         target="_blank"
                         href={`https://www.npmjs.com/package/${value}`}

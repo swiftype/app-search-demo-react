@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import { Input, Provider as ThemeProvider } from "rebass";
 import styled from "styled-components";
 
+import logo from "./logo.svg";
 import Results from "./Results";
 import Search from "./Search";
-import logo from "./logo.svg";
+import Totals from "./Totals";
 
 const HeaderBar = styled.div`
   color: rgb(255, 255, 255);
@@ -60,7 +61,7 @@ class App extends Component {
         }}
       >
         <Search>
-          {({ results, query, updateQuery }) => (
+          {({ query, results, pageState, updateQuery }) => (
             <div className="App">
               <HeaderBar>
                 <HeaderBarInner>
@@ -74,6 +75,7 @@ class App extends Component {
               </HeaderBar>
               <Body>
                 <BodyInner>
+                  <Totals {...pageState} />
                   <Results results={results} />
                 </BodyInner>
               </Body>

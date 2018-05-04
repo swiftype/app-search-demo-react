@@ -2,6 +2,56 @@ import { Component } from "react";
 import { debounce } from "lodash";
 import * as SwiftypeAppSearch from "swiftype-app-search-javascript";
 
+const QUERY_OPTIONS = {
+  search_fields: {
+    name: {},
+    description: {},
+    keywords: {},
+    owners: {},
+    dependencies: {}
+  },
+  result_fields: {
+    id: { raw: {} },
+    name: {
+      raw: {},
+      snippet: {
+        size: 200,
+        fallback: true
+      }
+    },
+    version: { raw: {} },
+    description: {
+      snippet: {
+        size: 200,
+        fallback: true
+      }
+    },
+    keywords: {
+      raw: {},
+      snippet: {
+        size: 200,
+        fallback: true
+      }
+    },
+    repository: { raw: {} },
+    owners: {
+      raw: {},
+      snippet: {
+        size: 200,
+        fallback: true
+      }
+    },
+    dependencies: {
+      raw: {},
+      snippet: {
+        size: 200,
+        fallback: true
+      }
+    },
+    homepage: { raw: {} }
+  }
+};
+
 /*
   A simple abstraction to centralize all App Search logic in one place. This uses the
   Render Props pattern (https://reactjs.org/docs/render-props.html) and hence makes no assumption
@@ -12,6 +62,12 @@ import * as SwiftypeAppSearch from "swiftype-app-search-javascript";
 */
 export default class Search extends Component {
   state = {
+    pageState: {
+      currentPage: 0,
+      pageSize: 0,
+      totalPages: 0,
+      totalResults: 0
+    },
     query: "",
     results: []
   };
@@ -31,66 +87,22 @@ export default class Search extends Component {
       engineName: "node-modules"
     });
 
-    var options = {
-      search_fields: {
-        name: {},
-        description: {},
-        keywords: {},
-        owners: {},
-        dependencies: {}
-      },
-      result_fields: {
-        id: { raw: {} },
-        name: {
-          raw: {},
-          snippet: {
-            size: 200,
-            fallback: true
-          }
-        },
-        version: { raw: {} },
-        description: {
-          snippet: {
-            size: 200,
-            fallback: true
-          }
-        },
-        keywords: {
-          raw: {},
-          snippet: {
-            size: 200,
-            fallback: true
-          }
-        },
-        repository: { raw: {} },
-        owners: {
-          raw: {},
-          snippet: {
-            size: 200,
-            fallback: true
-          }
-        },
-        dependencies: {
-          raw: {},
-          snippet: {
-            size: 200,
-            fallback: true
-          }
-        },
-        homepage: { raw: {} }
-      }
-    };
-
-    client
-      .search(query, options)
-      .then(resultList => {
+    client.search(query, QUERY_OPTIONS).then(
+      resultList => {
         this.setState({
-          results: resultList.results
+          results: resultList.results,
+          pageState: {
+            currentPage: resultList.info.meta.page.current,
+            pageSize: resultList.info.meta.page.size,
+            totalPages: resultList.info.meta.page.total_pages,
+            totalResults: resultList.info.meta.page.total_results
+          }
         });
-      })
-      .catch(error => {
+      },
+      error => {
         console.log(`error: ${error}`);
-      });
+      }
+    );
   }, 200);
 
   componentDidMount() {
@@ -99,7 +111,12 @@ export default class Search extends Component {
 
   render() {
     const { children } = this.props;
-    const { query, results } = this.state;
-    return children({ query, results, updateQuery: this.updateQuery });
+    const { pageState, query, results } = this.state;
+    return children({
+      pageState,
+      query,
+      results,
+      updateQuery: this.updateQuery
+    });
   }
 }
