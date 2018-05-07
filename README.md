@@ -1,12 +1,12 @@
 # App Search React Example
 
-This example demonstrates how to build a React based search interface using Swiftype's App Search.
+This example demonstrates how to build a React-based search interface using Swiftype's App Search.
 
 This README is broken down into the following sections:
 
 * [Setup](#setup) - Follow these instructions to run the example search app.
-* [React Quick Start](#react-quick-start) - Build your own React based search app in a few simple steps.
-* [Topics](#topics) - Considerations when building a React based search app.
+* [React Quick Start](#react-quick-start) - Build your own React-based search app in a few simple steps.
+* [Topics](#topics) - Considerations when building a React-based search app.
 
 ## Setup
 
@@ -27,7 +27,9 @@ Before setting up this project, you will need to create a new Engine on [Swiftyp
 
 You'll then need to configure this project to point to your newly created Engine, so create a `.env` file at the root of this project using the following format:
 
-```
+```bash
+# .env
+
 REACT_APP_HOST_KEY=<key goes here>
 REACT_APP_API_KEY=<key goes here>
 REACT_APP_SEARCH_KEY=<key goes here>
@@ -74,16 +76,16 @@ Getting a React-based front-end up and running for App Search is dead simple. He
 ```bash
 yarn global add create-react-app
 create-react-app node-module-search
+cd node-module-search/
 ```
 
-3.  Add the App Search Javascript Search Client:
+3.  Add the App Search Javascript Client:
 
 ```bash
-cd node-module-search/
 yarn add swiftype-app-search-javascript
 ```
 
-4.  Configure your app with your App Search credentials. The steps are listed in [Setup](#setup). The same `.env` file will work here, but note that since we're only querying, not indexing, you won't need your write-privledged API key, just the Host and read-only Search key will do.
+4.  Configure your app with your App Search credentials. The steps are listed in [Setup](#setup). The same `.env` file will work here, but note that since we're only querying, not indexing, you won't need your write-privledged API key, just the Host and read-only Search API key will do.
 
 ```bash
 # .env
@@ -183,7 +185,7 @@ export default App;
 yarn start
 ```
 
-At this point, you should have a fully functioning, ableit simple, React based interface for your App Search Engine. Huzzah!
+At this point, you should have a fully functioning, ableit simple, React-based interface for your App Search Engine. Huzzah!
 
 ![Create Engine Screenshot](readme_images/basic.png)
 
