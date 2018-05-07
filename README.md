@@ -353,9 +353,17 @@ ex.
 
 ```jsx
 <Search>
-  {({ query, results, filters, pageState, updatePage, updateQuery, updateFilters }) => (
+  {({
+    query,
+    results,
+    filters,
+    pageState,
+    updatePage,
+    updateQuery,
+    updateFilters
+  }) => (
     <div>
-      <Totals {...pageState}>
+      <Totals {...pageState} />
       <SearchBox query={query} onChange={updateQuery} />
       <Filtes filters={filters} onChange={updateFilters} />
       <Results results={results} />
