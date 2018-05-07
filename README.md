@@ -4,7 +4,7 @@ This example demonstrates how to build a React based search interface using Swif
 
 This README is broken down into the follow sections:
 
-* [Setup](#setup) - Follow these instructions to run the Example app.
+* [Setup](#setup) - Follow these instructions to run the Example search app.
 * [React Quick Start](#react-quick-start) - Build your own basic React app in a few simple steps.
 * [Topics](#topics) - Considerations when building a React based search app.
 
@@ -60,8 +60,6 @@ At this point, your engine is ready and all that is left to do is run the app.
 ```
 yarn start
 ```
-
-This app primarily uses [swiftype-app-search-javascript](https://github.com/swiftype/swiftype-app-search-javascript) to query our new Engine and renders the results.
 
 ## React Quick Start
 
@@ -187,15 +185,46 @@ At this point, you should have a fully functioning, ableit simple, React based i
 
 ![Create Engine Screenshot](readme_images/basic.png)
 
-Don't stop there though. Review the example code and some of the [Topics](#topics) listed below to scale your search app.
+Don't stop there though. This app is super simple and it won't get your very far. Review the example code and some of the [Topics](#topics) listed below to scale this up to meet your needs.
 
 ## Topics
 
 ### Indexing your data
 
+Generally speaking, indexing data (i.e. the process of populating your Engine with documents, or data) is outside the purview of a React App. You'll likely implement that as part of your backend API. However, you can see an example of how this might be accomplished using the [Node.js client](https://github.com/swiftype/swiftype-app-search-node) in this example's [index-data.js](./scripts/index-data.js) script.
+
+For more information, visit the Swiftype App Search [documentation](https://swiftype.com/documentation/app-search/guides/indexing-documents).
+
 ### Accessing your data
 
-#### Managing API credentials
+You effectively have two options for accessing data from a React app.
+
+1.  Access the data through your own API, which queries your Engine on the backend.
+2.  Access the data through Swiftype's API, querying data directly in the front end using the [swiftype-app-search-javascript](https://github.com/swiftype/swiftype-app-search-javascript) client.
+
+Typically, you'll want to go with option 2, and query Swiftype's API directly from the front-end. Swiftype's App Search API
+is highly optimized, so querying directly should give you the fastest search experience. This example app takes that approach.
+
+#### Configuring your search app with API credentials
+
+In order to use the Javascript clieht, you'll need to configure it with credentials. Here are a few approaches you might consider:
+
+1.  Configuration at build time
+
+    This is the approach this example application uses. It reads the API credentials you provide at build time from `.env`, and
+    includes them as part of the built Javascript bundle. This is convenient as `create-react-app` has a mechanism built in for that, [out of the box](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#adding-custom-environment-variables). The drawback of this approach is that the build bundle becomes environment specific, you couldn't use the same bundle in multiple environments.
+
+2.  Configuration at run time
+
+    An alternate approach would be configuring these environment variables as part of your host application, server side, and then passing them in through data attributes in the DOM:
+
+    ```
+    <div data-host-key="your_key_here" data-search-key="your_key_here" id="search" />
+    ```
+
+3.  Configuration through proxy
+
+    This approach would involve proxying API requests through your own API, which adds the appropriate authentication Headers. This would typically be implemented in order to hide your API key from public view, however, as long as you are using a read-only API key, it is often unnecessary to implement this.
 
 ### State Management
 
