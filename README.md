@@ -257,7 +257,7 @@ console.log(this.state.query);
 // 'search term'
 ```
 
-In our case, instead of managing state in local component state, we're simply lifting it up to the url, so we just use a slightly different pattern,
+In our case, instead of managing state in local component state, we're simply lifting it up to the url, so we just use a slightly modified pattern:
 
 ```javascript
 // Update state
@@ -361,16 +361,74 @@ ex.
 
 ### Implementing a search box
 
-### Showing Results
+There's no magic involved in creating a search box for App Search. For the best experience, a "Live" search
+box is often best choice.
+
+By "Live", we simply mean a search box that reacts to user input "live" as a user inputs it. That could be something like we have in our Example, where we are showing the results in the page body below the search box, or it could be something like an autocomplete box. In either case, the approach is the same:
+
+1.  Create an input box that implements an `onChange` handler and shows the current query value
+
+    ```jsx
+    export default function SearchBox({ query, onChange }) {
+      return <input type="text" value={query} onChange={onChange} />;
+    }
+    ```
+
+2.  Add a [central Search store](#centralize-your-search-state-and-logic), to house your query logic
+
+    ```jsx
+    <Search>
+      {({ query, updateQuery }) => (
+        <div>
+          <SearchBox query={query} onChange={updateQuery} />
+        </div>
+      )}
+    </Search>
+    ```
+
+3.  Render your results somewhere!
+
+    Again, that could be in the page body:
+
+    ```jsx
+    <Search>
+      {({ query, updateQuery, results }) => (
+        <div>
+          <SearchBox query={query} onChange={updateQuery} />
+          <Results results={results} />
+        </div>
+      )}
+    </Search>
+    ```
+
+    Or it could be part of an autocomplete, rendered in your SearchBox
+
+    ```jsx
+    <Search>
+      {({ query, updateQuery, results }) => (
+        <div>
+          <SearchBox query={query} onChange={updateQuery} results={results} />
+        </div>
+      )}
+    </Search>
+    ```
+
+#### Deboucing
+
+Implementing a "live" search box will generate a large volume of requests to the server. To reduce the number of requests sent to the server, it can be useful to implement a `debounce` on your `onChange` handler. We do this using [lodash](https://lodash.com/docs/4.17.10#debounce).
+
+#### Auto-complete
+
+There are many popular "auto-complete", or "type-ahead" components for React that you may be able to use with Swiftype. We haven't evaluated them for use yet, but any Component that implements a stateless interface that allows you to pass in everything as props as we do above should work well.
 
 ### Paging
+
+Pagination details are stored in the meta details in server responses. These details can easily be fed to most pagination components, like [rc-pagination](https://www.npmjs.com/package/rc-pagination), which we find to be flexible and work well with App Search.
+
+See [Pagination.js](src/Pagination.js)
 
 ### Filtering
 
 ### Click through tracking
 
 ### Testing
-
-```
-
-```
