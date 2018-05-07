@@ -367,10 +367,10 @@ ex.
 
 ### Implementing a search box
 
-There's no magic involved in creating a search box for App Search. For the best experience, a "Live" search
-box is often best choice.
+There's no magic involved in creating a search box for App Search. For the best experience, a "live" search
+box is often the best choice.
 
-By "Live", we simply mean a search box that reacts to user input "live" as a user inputs it. That could be something like we have in our Example, where we are showing the results in the page body below the search box, or it could be something like an autocomplete box. In either case, the approach is the same:
+By "live", we simply mean a search box that reacts to user input "live" as a user inputs it. That could be something like we have in our Example, where we are showing the results in the page body below the search box, or it could be something like an autocomplete box. In either case, the approach is the same:
 
 1.  Create an input box that implements an `onChange` handler and shows the current query value
 
