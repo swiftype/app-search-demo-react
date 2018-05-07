@@ -28,10 +28,7 @@
     "index-data": "node scripts/index-data.js"
   },
   "lint-staged": {
-    "src/**/*.{js,css}": [
-      "prettier --write",
-      "git add"
-    ]
+    "src/**/*.{js,css}": ["prettier --write", "git add"]
   },
   "devDependencies": {
     "eslint": "^4.19.1",

@@ -25,6 +25,7 @@ function format(pkg) {
   let {
     name,
     version,
+    license,
     description,
     homepage,
     created,
@@ -41,6 +42,7 @@ function format(pkg) {
     id: name,
     name,
     version,
+    license,
     description,
     homepage,
     created,
