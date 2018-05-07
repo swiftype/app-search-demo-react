@@ -8,6 +8,7 @@ import Pagination from "./Pagination";
 import Results from "./Results";
 import Search from "./Search";
 import Totals from "./Totals";
+import Filters from "./Filters";
 
 const HeaderBar = styled.div`
   color: rgb(255, 255, 255);
@@ -45,6 +46,19 @@ const Body = styled.div`
 const BodyInner = styled.div`
   width: 100%;
   max-width: 1024px;
+  display: flex;
+`;
+
+const LeftColumn = styled.div`
+  width: 250px;
+  margin-right: 20px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  padding: 16px;
+`;
+
+const RightColumn = styled.div`
+  flex: 1;
 `;
 
 const Logo = styled.img`
@@ -80,9 +94,14 @@ class App extends Component {
                     </HeaderBar>
                     <Body>
                       <BodyInner>
-                        <Totals {...pageState} />
-                        <Results results={results} />
-                        <Pagination {...pageState} onPage={updatePage} />
+                        <LeftColumn>
+                          <Filters />
+                        </LeftColumn>
+                        <RightColumn>
+                          <Totals {...pageState} />
+                          <Results results={results} />
+                          <Pagination {...pageState} onPage={updatePage} />
+                        </RightColumn>
                       </BodyInner>
                     </Body>
                   </div>
