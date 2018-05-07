@@ -234,7 +234,7 @@ In the React ecosystem, there are many solutions for State Management. Any solut
 
 #### Manage your search state in the url
 
-A good search front-end will have stateful urls that are shareable and navigable with browser back and forward buttons. This is relatively simple to implement with [React Router](https://github.com/ReactTraining/react-router), which is what we chose to use in this example.
+A good search front-end will have stateful urls that are shareable and navigable with browser back and forward buttons. This is relatively simple to implement with [React Router](https://github.com/ReactTraining/react-router), which is what we chose to use in this example. The other package you'll see us use is [query-string](https://github.com/sindresorhus/query-string), which is a simple query string parser, which react-router lacks out of the box.
 
 We want to save our state in the query string (as opposed to a hash fragment), so we use the `BrowserRouter`.
 
@@ -353,9 +353,10 @@ ex.
       <SearchBox query={query} onChange={updateQuery} />
       <Filtes filters={filters} onChange={updateFilters} />
       <Results results={results} />,
-      <Paging {...pageState} onPageChange={updatePage}>
+      <Paging {...pageState} onPageChange={updatePage} />
     </div>
-  )
+  )}
+</Search>
 ```
 
 ### Implementing a search box
