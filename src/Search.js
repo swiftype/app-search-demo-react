@@ -78,12 +78,21 @@ export default class Search extends Component {
   };
 
   updatePage = newPage => {
-    const { q } = this.getQueryState();
-    this.updateResults(q, newPage);
+    const { history } = this.props;
+    history.push(
+      "?" + queryString.stringify({ ...this.getQueryState(), page: newPage })
+    );
   };
 
-  updateResults = debounce((query, page) => {
-    console.log("updating");
+  updateFromQueryState = () => {
+    let { q, page } = this.getQueryState();
+    q = q || "";
+    page = parseInt(page, 10);
+    page = isNaN(page) ? 1 : page;
+    this.updateResults({ query: q, page: parseInt(page, 10) });
+  };
+
+  updateResults = debounce(({ query, page = 1 }) => {
     var client = SwiftypeAppSearch.createClient({
       accountHostKey: process.env.REACT_APP_HOST_KEY,
       apiKey: process.env.REACT_APP_API_KEY,
@@ -119,14 +128,12 @@ export default class Search extends Component {
   getQueryState = () => queryString.parse(this.props.location.search);
 
   componentDidMount() {
-    const { q } = this.getQueryState();
-    this.updateResults(q);
+    this.updateFromQueryState();
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.location.search !== prevProps.location.search) {
-      const { q } = this.getQueryState();
-      this.updateResults(q);
+      this.updateFromQueryState();
     }
   }
 
