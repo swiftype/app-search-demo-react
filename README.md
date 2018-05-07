@@ -2,15 +2,15 @@
 
 This example demonstrates how to build a React based search interface using Swiftype's App Search.
 
-This README is broken down into the follow sections:
+This README is broken down into the following sections:
 
-* [Setup](#setup) - Follow these instructions to run the Example search app.
-* [React Quick Start](#react-quick-start) - Build your own basic React app in a few simple steps.
+* [Setup](#setup) - Follow these instructions to run the example search app.
+* [React Quick Start](#react-quick-start) - Build your own React based search app in a few simple steps.
 * [Topics](#topics) - Considerations when building a React based search app.
 
 ## Setup
 
-To get started, simply clone this repository and run yarn to install dependencies.
+To get started, simply clone this repository and run `yarn` to install dependencies.
 
 ```
 # Clone the repository
@@ -28,12 +28,12 @@ Before setting up this project, you will need to create a new Engine on [Swiftyp
 You'll then need to configure this project to point to your newly created Engine, so create a `.env` file at the root of this project using the following format:
 
 ```
-REACT_APP_HOST_KEY=
-REACT_APP_API_KEY=
-REACT_APP_SEARCH_KEY=
+REACT_APP_HOST_KEY=<key goes here>
+REACT_APP_API_KEY=<key goes here>
+REACT_APP_SEARCH_KEY=<key goes here>
 ```
 
-From within the Engine Dashbord, navigate to "Access > API Keys". Enter the "Account Host Key", "api-key", and "search-key" values from that screen as values in the `.env` file, respectively.
+From within the Engine Dashbord, navigate to "Access > API Keys". Copy the "Account Host Key", "api-key", and "search-key" from that screen and use them as values in the `.env` file, respectively.
 
 ### Push data to the `node-modules` Engine
 
@@ -41,23 +41,25 @@ This project doesn't have a backend API or database as many projects would. Inst
 using the [swiftype-app-search-node](https://github.com/swiftype/swiftype-app-search-node) client. This JSON file doesn't
 exist yet, so the first thing to do is download that data file.
 
-```
+```bash
+# Download data/node-modules.js
 yarn run init-data
 ```
 
 If that ran succesfully, a `data/node-modules.json` file should now exist. Now index the data you've downloaded into your App Search Engine:
 
-```
+```bash
+# Index data from data/node-modules.json into the node-modules Engine
 yarn run index-data
 ```
 
-If you return to your Engine's Dashboard, you should now see the indexed documents. Once there, you'll need define types for your Schema. By default, everything should be Text, which is correct for the most part. The only thing you'll need to is change the two date fields, `created` and `modified`, to `Date` types.
+If you return to your Engine's Dashboard, you should now see the indexed documents. Once there, you'll need to define types for your Schema. By default, everything should be of type "Text", which is correct for the most part. The only thing you'll need to is change the two date fields, `created` and `modified`, to `Date` types.
 
 ### Run the search app
 
 At this point, your engine is ready and all that is left to do is run the app.
 
-```
+```bash
 yarn start
 ```
 
