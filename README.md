@@ -207,30 +207,158 @@ is highly optimized, so querying directly should give you the fastest search exp
 
 #### Configuring your search app with API credentials
 
-In order to use the Javascript clieht, you'll need to configure it with credentials. Here are a few approaches you might consider:
+In order to use the Javascript client, you'll need to configure it with credentials. Here are a few approaches you might consider:
 
 1.  Configuration at build time
 
     This is the approach this example application uses. It reads the API credentials you provide at build time from `.env`, and
-    includes them as part of the built Javascript bundle. This is convenient as `create-react-app` has a mechanism built in for that, [out of the box](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#adding-custom-environment-variables). The drawback of this approach is that the build bundle becomes environment specific, you couldn't use the same bundle in multiple environments.
+    includes them as part of the built Javascript bundle. This is convenient as `create-react-app` has a mechanism built in for that, [out of the box](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#adding-custom-environment-variables). The drawback of this approach is that the built bundle is environment specific, so you couldn't use the same bundle in multiple environments.
 
 2.  Configuration at run time
 
     An alternate approach would be configuring these environment variables as part of your host application, server side, and then passing them in through data attributes in the DOM:
 
-    ```
+    ```html
     <div data-host-key="your_key_here" data-search-key="your_key_here" id="search" />
     ```
 
+    The advantage of this, is that your built bundle could now be deployed to multiple environments, with different configuration.
+
 3.  Configuration through proxy
 
-    This approach would involve proxying API requests through your own API, which adds the appropriate authentication Headers. This would typically be implemented in order to hide your API key from public view, however, as long as you are using a read-only API key, it is often unnecessary to implement this.
+    This approach would involve proxying API requests through your own API, which adds the appropriate authentication Headers. This would typically be implemented in order to hide your API key from public view, however, as long as you are using a read-only API key this should be unnecessary.
 
 ### State Management
 
-#### Managing URL State
+In the React ecosystem, there are many solutions for State Management. Any solution you choose will work with Swiftype; be it, Redux, Mobx, or whatever else. Regardless of what you pick, here are a couple of guidelines to help.
 
-### Searching
+#### Manage your search state in the url
+
+A good search front-end will have stateful urls that are shareable and navigable with browser back and forward buttons. This is relatively simple to implement with [React Router](https://github.com/ReactTraining/react-router), which is what we chose to use in this example.
+
+We want to save our state in the query string (as opposed to a hash fragment), so we use the `BrowserRouter`.
+
+Additionally, we need access to the values in our search query, and we don't want to access the browser `location` object directly, so we also include a `Route` component, which exposes this to us. Since we only have 1 route in our App, we don't configure a path match on it, we simply use the Route to get access to the `location` object.
+
+Our `Route` component also exposes the `history` object, which will allow us to update then url in reaction to user inputs.
+
+`BrowserRouter` actively detects changes to the url, so any time we use `history.pushState` to push new search selections to the url, the props will change on our app, forcing a re-render. This means that we can simply implement our search queries in `componentDidMount` and `componentDidUpdate`.
+
+In other words, if we were managing state in local component state, we'd be managing state like this:
+
+```javascript
+// Update state
+this.setState({
+  query: "search term"
+});
+
+// Read from state
+console.log(this.state.query);
+// 'search term'
+```
+
+In our case, instead of managing state in local component state, we're simply lifting it up to the url, so we just use a slightly different pattern,
+
+```javascript
+// Update state
+this.props.history.pushState(
+  queryString.stringify({
+    query: "search term"
+  })
+);
+
+// Read from state
+console.log(queryString.parse(this.props.location.search).query);
+// 'search term'
+```
+
+Here's a simple example of what it looks like all put together:
+
+```jsx
+// index.js
+
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import App from "./App.js"
+
+...
+
+<Router>
+  <Route>
+    {({ location, history }) => (
+      <App location={location} history={history} />
+    )}
+  </Route>
+<Router>
+
+
+// App.js
+
+
+state = {
+  results: null
+}
+
+handleOnChange(e) {
+  const query = e.target.value;
+  this.props.history.pushState(
+    queryString.stringify({
+      query: "search term"
+    })
+  );
+}
+
+updateResults() {
+  const query = queryString.parse(this.props.location.search).query;
+  fetchResults().then(results => {
+    this.setState({
+      results
+    })
+  })
+}
+
+componentDidMount() {
+  updateResults();
+}
+
+componentDidUpdate() {
+  updateResults();
+}
+
+render() {
+  return (<div>
+    <input
+      type="text"
+      value={queryString.parse(this.props.location.search).query}
+      onChange={this.handleOnChange} />
+    {this.props.results.map(result => (
+      // Results go here...
+    ))}
+  </div>)
+}
+```
+
+#### Centralize your search state and logic
+
+Using a central store is a smart decision for a search interface. Search screens often require data in many different disconnected pieces of the view (think totals, paging, filters, etc.), so having this data in one central store is very clean and ensures data is accessible by all of these pieces.
+
+You may choose to use something like Redux or Mobx, which would be excellent choices. For our app, which is fairly simple, we chose to simply use a single, high-level component to manage or store and actions. See [Search.js](src/Search.js). This is a simplistic approach, that simply encapsulates all search handlers and data. It uses the Render Props pattern (https://reactjs.org/docs/render-props.html) to pass these actions and data down to invididual components in the UI.
+
+ex.
+
+```jsx
+<Search>
+  {({ query, results, filters, pageState, updatePage, updateQuery, updateFilters }) => (
+    <div>
+      <Totals {...pageState}>
+      <SearchBox query={query} onChange={updateQuery} />
+      <Filtes filters={filters} onChange={updateFilters} />
+      <Results results={results} />,
+      <Paging {...pageState} onPageChange={updatePage}>
+    </div>
+  )
+```
+
+### Implementing a search box
 
 ### Showing Results
 
