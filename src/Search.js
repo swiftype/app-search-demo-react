@@ -1,5 +1,6 @@
 import { Component } from "react";
 import { debounce } from "lodash";
+import queryString from "query-string";
 import * as SwiftypeAppSearch from "swiftype-app-search-javascript";
 
 const QUERY_OPTIONS = {
@@ -68,23 +69,21 @@ export default class Search extends Component {
       totalPages: 0,
       totalResults: 0
     },
-    query: "",
     results: []
   };
 
   updateQuery = query => {
-    this.setState({
-      query
-    });
-
-    this.updateResults(query, 1);
+    const { history } = this.props;
+    history.push("?" + queryString.stringify({ q: query }));
   };
 
   updatePage = newPage => {
-    this.updateResults(this.state.query, newPage);
+    const { q } = this.getQueryState();
+    this.updateResults(q, newPage);
   };
 
   updateResults = debounce((query, page) => {
+    console.log("updating");
     var client = SwiftypeAppSearch.createClient({
       accountHostKey: process.env.REACT_APP_HOST_KEY,
       apiKey: process.env.REACT_APP_API_KEY,
@@ -117,16 +116,28 @@ export default class Search extends Component {
       );
   }, 200);
 
+  getQueryState = () => queryString.parse(this.props.location.search);
+
   componentDidMount() {
-    this.updateResults(this.state.query);
+    const { q } = this.getQueryState();
+    this.updateResults(q);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.location.search !== prevProps.location.search) {
+      const { q } = this.getQueryState();
+      this.updateResults(q);
+    }
   }
 
   render() {
     const { children } = this.props;
-    const { pageState, query, results } = this.state;
+    const { pageState, results } = this.state;
+    const { q } = this.getQueryState();
+
     return children({
       pageState,
-      query,
+      query: q,
       results,
       updatePage: this.updatePage,
       updateQuery: this.updateQuery

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Input, Provider as ThemeProvider } from "rebass";
 import styled from "styled-components";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import logo from "./logo.svg";
 import Pagination from "./Pagination";
@@ -61,29 +62,35 @@ class App extends Component {
           }
         }}
       >
-        <Search>
-          {({ query, results, pageState, updatePage, updateQuery }) => (
-            <div className="App">
-              <HeaderBar>
-                <HeaderBarInner>
-                  <Logo src={logo} alt="logo" />
-                  <Title>Module Search</Title>
-                  <StyledInput
-                    value={query}
-                    onChange={e => updateQuery(e.target.value)}
-                  />
-                </HeaderBarInner>
-              </HeaderBar>
-              <Body>
-                <BodyInner>
-                  <Totals {...pageState} />
-                  <Results results={results} />
-                  <Pagination {...pageState} onPage={updatePage} />
-                </BodyInner>
-              </Body>
-            </div>
-          )}
-        </Search>
+        <Router>
+          <Route>
+            {({ location, history }) => (
+              <Search location={location} history={history}>
+                {({ query, results, pageState, updatePage, updateQuery }) => (
+                  <div className="App">
+                    <HeaderBar>
+                      <HeaderBarInner>
+                        <Logo src={logo} alt="logo" />
+                        <Title>Module Search</Title>
+                        <StyledInput
+                          value={query}
+                          onChange={e => updateQuery(e.target.value)}
+                        />
+                      </HeaderBarInner>
+                    </HeaderBar>
+                    <Body>
+                      <BodyInner>
+                        <Totals {...pageState} />
+                        <Results results={results} />
+                        <Pagination {...pageState} onPage={updatePage} />
+                      </BodyInner>
+                    </Body>
+                  </div>
+                )}
+              </Search>
+            )}
+          </Route>
+        </Router>
       </ThemeProvider>
     );
   }
