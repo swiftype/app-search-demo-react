@@ -3,6 +3,12 @@ import { debounce } from "lodash";
 import queryString from "query-string";
 import * as SwiftypeAppSearch from "swiftype-app-search-javascript";
 
+const client = SwiftypeAppSearch.createClient({
+  accountHostKey: process.env.REACT_APP_HOST_KEY,
+  apiKey: process.env.REACT_APP_SEARCH_KEY,
+  engineName: "node-modules"
+});
+
 const QUERY_OPTIONS = {
   search_fields: {
     name: {},
@@ -93,12 +99,6 @@ export default class Search extends Component {
   };
 
   updateResults = debounce(({ query, page = 1 }) => {
-    var client = SwiftypeAppSearch.createClient({
-      accountHostKey: process.env.REACT_APP_HOST_KEY,
-      apiKey: process.env.REACT_APP_API_KEY,
-      engineName: "node-modules"
-    });
-
     client
       .search(query, {
         ...QUERY_OPTIONS,
