@@ -2,11 +2,11 @@
 
 This example demonstrates how to build a React based search interface using Swiftype's App Search.
 
-This README is broken down into the follow section:
+This README is broken down into the follow sections:
 
-* [Setup](#Setup) - Follow the instructions in the section below to run the Example app.
-* [React Quick Start](#React-Quick-Start) - Build your own basic React app in a few simple steps.
-* [Topics](#Topics) - Considerations for building a React based search app.
+* [Setup](#setup) - Follow these instructions to run the Example app.
+* [React Quick Start](#react-quick-start) - Build your own basic React app in a few simple steps.
+* [Topics](#topics) - Considerations when building a React based search app.
 
 ## Setup
 
@@ -63,11 +63,11 @@ yarn start
 
 This app primarily uses [swiftype-app-search-javascript](https://github.com/swiftype/swiftype-app-search-javascript) to query our new Engine and renders the results.
 
-### React Quick Start
+## React Quick Start
 
-Getting a React front-end up and running for App Search is dead simple. Here are a few quick steps to create basic front-end of your own:
+Getting a React-based front-end up and running for App Search is dead simple. Here are a few quick steps to create a basic front-end of your own:
 
-1.  Set up and populate an Engine. To do so, just pull this repo down and follow the instructions in [Setup](#Setup).
+1.  Set up and populate an Engine. To do so, just pull this repo down and follow the instructions in [Setup](#setup).
 
 2.  Create a new app with `create-react-app`
 
@@ -83,9 +83,9 @@ cd node-module-search/
 yarn add swiftype-app-search-javascript
 ```
 
-4.  Configure your app with your App Search credentials. The steps are listed in [Setup](#Setup). The same `.env` file will work here, but note that since we're only querying, not indexing, you won't need your write privledged API key, just the Host and read-only Search key will do.
+4.  Configure your app with your App Search credentials. The steps are listed in [Setup](#setup). The same `.env` file will work here, but note that since we're only querying, not indexing, you won't need your write-privledged API key, just the Host and read-only Search key will do.
 
-```
+```bash
 # .env
 
 REACT_APP_HOST_KEY=<key goes here>
@@ -95,7 +95,7 @@ REACT_APP_SEARCH_KEY=<key goes here>
 4.  Replace `App.js` with the following:
 
 ```javascript
-# src/App.js
+// src/App.js
 
 import React, { Component } from "react";
 import * as SwiftypeAppSearch from "swiftype-app-search-javascript";
@@ -185,9 +185,9 @@ yarn start
 
 At this point, you should have a fully functioning, ableit simple, React based interface for your App Search Engine. Huzzah!
 
-![Create Engine Screenshot](readme_images/basic.gif)
+![Create Engine Screenshot](readme_images/basic.png)
 
-Don't stop there though. Review the example code and some of the [Topics](#Topics) listed below to scale your search app.
+Don't stop there though. Review the example code and some of the [Topics](#topics) listed below to scale your search app.
 
 ## Topics
 
