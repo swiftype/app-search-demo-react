@@ -325,7 +325,9 @@ componentDidMount() {
 }
 
 componentDidUpdate() {
-  updateResults();
+  if (this.props.location.search !== prevProps.location.search) {
+    updateResults();
+  }
 }
 
 render() {
@@ -356,7 +358,7 @@ ex.
       <Totals {...pageState}>
       <SearchBox query={query} onChange={updateQuery} />
       <Filtes filters={filters} onChange={updateFilters} />
-      <Results results={results} />,
+      <Results results={results} />
       <Paging {...pageState} onPageChange={updatePage} />
     </div>
   )}
