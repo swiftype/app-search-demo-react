@@ -94,7 +94,7 @@ class App extends Component {
                     <HeaderBar>
                       <HeaderBarInner>
                         <Logo src={logo} alt="logo" />
-                        <Title>Module Search</Title>
+                        <Title>Package Search</Title>
                         <StyledInput
                           value={query}
                           onChange={e => updateQuery(e.target.value)}
