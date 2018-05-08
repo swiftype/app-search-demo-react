@@ -62,11 +62,19 @@ const QUERY_OPTIONS = {
     license: {
       type: "value",
       size: 10
+    },
+    keywords: {
+      type: "value",
+      size: 10
+    },
+    dependencies: {
+      type: "value",
+      size: 10
     }
   }
 };
 
-const FILTERS_WHITELIST = ["license"];
+const FILTERS_WHITELIST = ["dependencies", "license", "keywords"];
 
 function getFiltersFromQueryState(queryState) {
   return FILTERS_WHITELIST.reduce((acc, filterName) => {
@@ -87,6 +95,7 @@ function getFiltersFromQueryState(queryState) {
 export default class Search extends Component {
   state = {
     facets: {},
+    filters: {},
     pageState: {
       currentPage: 0,
       pageSize: 0,
@@ -133,6 +142,7 @@ export default class Search extends Component {
         resultList => {
           this.setState({
             facets: resultList.info.facets,
+            filters: filters.reduce((p, n) => ({ ...p, ...n }), {}),
             pageState: {
               currentPage: resultList.info.meta.page.current,
               pageSize: resultList.info.meta.page.size,
@@ -162,11 +172,12 @@ export default class Search extends Component {
 
   render() {
     const { children } = this.props;
-    const { facets, pageState, results } = this.state;
+    const { facets, filters, pageState, results } = this.state;
     const { q } = this.getQueryState();
 
     return children({
       facets,
+      filters,
       pageState,
       query: q,
       queryState: this.getQueryState(),

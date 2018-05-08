@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { Panel, Box, Link } from "rebass";
 
+import FilterLink from "./FilterLink";
+
 const LinkContainer = styled.span``;
 
 const Result = Panel.extend`
@@ -55,7 +57,7 @@ function getSnippet(result, field) {
   return (result.data[field] || {}).snippet;
 }
 
-export default function Results({ results }) {
+export default function Results({ results, queryState }) {
   return (
     <StyledResults>
       {results.map(result => (
@@ -92,27 +94,40 @@ export default function Results({ results }) {
                 label="Dependencies"
                 value={getRaw(result, "dependencies")}
               >
-                {(
-                  values //values.join(",")
-                ) =>
+                {values =>
                   values.map(value => (
                     <LinkContainer key={value}>
-                      <a
-                        target="_blank"
-                        href={`https://www.npmjs.com/package/${value}`}
+                      <FilterLink
+                        name="dependencies"
+                        value={value}
+                        queryState={queryState}
                       >
                         {value}
-                      </a>
+                      </FilterLink>
                     </LinkContainer>
                   ))
                 }
               </LineItem>
               <LineItem label="License" value={getRaw(result, "license")}>
-                {value => value}
+                {value => value.join(", ")}
               </LineItem>
-
               <LineItem label="Owners" value={getRaw(result, "owners")}>
                 {value => value.join(", ")}
+              </LineItem>
+              <LineItem label="Keywords" value={getRaw(result, "keywords")}>
+                {values =>
+                  values.map(value => (
+                    <LinkContainer key={value}>
+                      <FilterLink
+                        name="keywords"
+                        value={value}
+                        queryState={queryState}
+                      >
+                        {value}
+                      </FilterLink>
+                    </LinkContainer>
+                  ))
+                }
               </LineItem>
             </List>
           </Box>

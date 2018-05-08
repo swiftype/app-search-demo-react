@@ -82,6 +82,7 @@ class App extends Component {
               <Search location={location} history={history}>
                 {({
                   facets,
+                  filters,
                   pageState,
                   query,
                   queryState,
@@ -103,11 +104,15 @@ class App extends Component {
                     <Body>
                       <BodyInner>
                         <LeftColumn>
-                          <Facets facets={facets} queryState={queryState} />
+                          <Facets
+                            facets={facets}
+                            filters={filters}
+                            queryState={queryState}
+                          />
                         </LeftColumn>
                         <RightColumn>
                           <Totals {...pageState} />
-                          <Results results={results} />
+                          <Results results={results} queryState={queryState} />
                           <Pagination {...pageState} onPage={updatePage} />
                         </RightColumn>
                       </BodyInner>

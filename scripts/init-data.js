@@ -42,17 +42,23 @@ function format(pkg) {
     id: name,
     name,
     version,
-    license,
+    license: [].concat(license || []).map(l => (l && l.type ? l.type : l)),
     description,
     homepage,
     created,
     modified,
     preferGlobal,
-    keywords,
-    repository,
-    owners: (owners || []).map(o => o.email),
+    keywords: stringToArray(keywords),
+    repository: [].concat(repository || []),
+    owners: [].concat(owners || []).map(o => o.email),
     dependencies: Object.keys(dependencies || {})
   };
+}
+
+function stringToArray(value) {
+  if (!value) return [];
+  if (Array.isArray(value)) return value;
+  if (typeof value === "string") return value.replace(/\s+/g, ",").split(",");
 }
 
 function handleUpToDate() {

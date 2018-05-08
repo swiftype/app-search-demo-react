@@ -1,5 +1,6 @@
 import React from "react";
 import FilterLink from "./FilterLink";
+import RemoveFilterLink from "./RemoveFilterLink";
 
 function Facet({ name, children }) {
   return (
@@ -21,20 +22,71 @@ function FacetValue({ facetName, facetValue: [value, count], queryState }) {
   );
 }
 
-export default function Facets({ facets, queryState }) {
+function SelectedFacetValue({ facetName, value, queryState }) {
+  return (
+    <li>
+      {value} (<RemoveFilterLink name={facetName} queryState={queryState}>
+        Remove
+      </RemoveFilterLink>)
+    </li>
+  );
+}
+
+function SingleValueFacetSelection({
+  displayName,
+  facetName,
+  facet,
+  filter,
+  queryState
+}) {
+  if (!facet || facet[0].data.length === 0) return null;
+
+  return (
+    <Facet name={displayName}>
+      {!!filter && (
+        <SelectedFacetValue
+          facetName={facetName}
+          value={filter}
+          queryState={queryState}
+        />
+      )}
+      {!filter &&
+        facet[0].data.map(facetValue => (
+          <FacetValue
+            facetName={facetName}
+            facetValue={facetValue}
+            key={facetValue[0]}
+            queryState={queryState}
+          />
+        ))}
+    </Facet>
+  );
+}
+
+export default function Facets({ facets, filters, queryState }) {
   return (
     <div>
-      <Facet name="License">
-        {facets.license &&
-          facets.license[0].data.map(facetValue => (
-            <FacetValue
-              facetName="license"
-              facetValue={facetValue}
-              key={facetValue[0]}
-              queryState={queryState}
-            />
-          ))}
-      </Facet>
+      <SingleValueFacetSelection
+        displayName="License"
+        facetName="license"
+        facet={facets.license}
+        filter={filters.license}
+        queryState={queryState}
+      />
+      <SingleValueFacetSelection
+        displayName="Keywords"
+        facetName="keywords"
+        facet={facets.keywords}
+        filter={filters.keywords}
+        queryState={queryState}
+      />
+      <SingleValueFacetSelection
+        displayName="Dependencies"
+        facetName="dependencies"
+        facet={facets.dependencies}
+        filter={filters.dependencies}
+        queryState={queryState}
+      />
     </div>
   );
 }
