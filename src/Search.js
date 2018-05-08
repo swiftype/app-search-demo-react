@@ -66,6 +66,16 @@ const QUERY_OPTIONS = {
   }
 };
 
+const FILTERS_WHITELIST = ["license"];
+
+function getFiltersFromQueryState(queryState) {
+  return FILTERS_WHITELIST.reduce((acc, filterName) => {
+    const filterValue = queryState[filterName];
+    if (!filterValue) return acc;
+    return acc.concat({ [filterName]: filterValue });
+  }, []);
+}
+
 /*
   A simple abstraction to centralize all App Search logic in one place. This uses the
   Render Props pattern (https://reactjs.org/docs/render-props.html) and hence makes no assumption
@@ -100,16 +110,20 @@ export default class Search extends Component {
 
   updateFromQueryState = () => {
     let { q, page } = this.getQueryState();
+    const filters = getFiltersFromQueryState(this.getQueryState());
     q = q || "";
     page = parseInt(page, 10);
     page = isNaN(page) ? 1 : page;
-    this.updateResults({ query: q, page: parseInt(page, 10) });
+    this.updateResults({ query: q, page: parseInt(page, 10), filters });
   };
 
-  updateResults = debounce(({ query, page = 1 }) => {
+  updateResults = debounce(({ query, page = 1, filters }) => {
     client
       .search(query, {
         ...QUERY_OPTIONS,
+        filters: {
+          all: filters
+        },
         page: {
           size: 10,
           current: page
