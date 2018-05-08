@@ -378,7 +378,7 @@ ex.
 There's no magic involved in creating a search box for App Search. For the best experience, a "live" search
 box is often the best choice.
 
-By "live", we simply mean a search box that reacts to user input "live" as a user inputs it. That could be something like we have in our Example, where we are showing the results in the page body below the search box, or it could be something like an autocomplete box. In either case, the approach is the same:
+By "live", we simply mean a search box that reacts to user input "live" as a user types. That could be something like we have in our Example, where we are showing the results in the page body below the search box, or it could be something like a type-ahead search box. In either case, the approach is the same:
 
 1.  Create an input box that implements an `onChange` handler and shows the current query value
 
@@ -431,7 +431,7 @@ By "live", we simply mean a search box that reacts to user input "live" as a use
 
 Implementing a "live" search box will generate a large volume of requests to the server. To reduce the number of requests sent to the server, it can be useful to implement a `debounce` on your `onChange` handler. We do this using [lodash](https://lodash.com/docs/4.17.10#debounce).
 
-#### Auto-complete
+#### Type-ahead
 
 There are many popular "auto-complete", or "type-ahead" components for React that you may be able to use with Swiftype. We haven't evaluated them for use yet, but any Component that implements a stateless interface that allows you to pass in everything as props as we do above should work well.
 
@@ -441,8 +441,85 @@ Pagination details are stored in the meta details in server responses. These det
 
 See [Pagination.js](src/Pagination.js)
 
+Note: The App Search API currently only supports up to 100 pages, so be sure to limit your pagination component to show no more than 100 pages.
+
 ### Filtering
+
+Filtering lets us further refine search query results. Our approach, as discussed in the [State Management](#state-management) section, is to store all search state in the url.
+
+For example, in the following url, we are querying by the term "express", and then filtering the reults to include only packes that have "node" listed in their "dependencies", and a "license" of "MIT".
+
+```
+http://localhost:3000/?q=express&dependencies=node&license=MIT
+```
+
+In [Search.js](src/Search.js), we then read those from the url and include them as an option in our Search API call:
+
+```
+filters: {
+  all: {
+    dependencies: "express",
+    license: "MIT"
+  }
+}
+```
+
+Once that is in place, you should be able to manually add filters to your search string and see the results change. The only left to do, then, is actually implement code to update the filter state in the url.
+
+We do this through two components, which are simple wrappers around React Router's [Link](https://reacttraining.com/react-router/web/api/Link) component.
+
+[FilterLink](src/FilterLink.js)
+
+```jsx
+// This simply creates a link with `dependencies=node` appended to the query string
+<FilterLink name="dependencies" value="node" queryState={queryState}>>
+```
+
+[RemoveFilterLink](src/RemoveFilterLink.js)
+
+```jsx
+// This simply creates a link with `dependencies=node` removed from the query string
+<RemoveFilterLink name="dependencies" value="node" queryState={queryState}>>
+```
+
+Using these custom Link components lets us apply filters delcaratively from anywhere in our UI.
+
+### Faceted Search
+
+Faceted Search takes the idea of filtering one step further. In our example app, we decided to show three Facet filters, `license`, `keywords`, and `depencencies`. In order to get the details needed to build these filters, including values and counts, we simply passed some additional search options in our query in [Search.js](src/Search.js).
+
+```json
+facets: {
+  license: {
+    type: "value",
+    size: 10 // Since there are many many values for each of these, we limited them to just 10 values each.
+  },
+  keywords: {
+    type: "value",
+    size: 10
+  },
+  dependencies: {
+    type: "value",
+    size: 10
+  }
+}
+```
+
+This in turn gives us all the information we require to build the Faceted Search navigation in the left hand-side of the screen. From there, we simply use our `FilterLink` and `RemoveFilterLink` components from the [Filtering](#filtering) section to turn the values into links.
+
+The code for this can be found in our [Facets](src/Facets.js) component.
+
+Note that our implementation it simplistic. Other things might consider including are:
+
+* The ability to select more than one filter value
+* Having a "Show more" button so that you can see more than the first 10 Facet values
+
+There are many more options for Facets, be sure to check out the full set of options in the docs!
 
 ### Click through tracking
 
 ### Testing
+
+```
+
+```
