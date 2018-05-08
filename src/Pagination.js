@@ -1,5 +1,4 @@
 import React from "react";
-import { ButtonCircle } from "rebass";
 import styled from "styled-components";
 import RCPagination from "rc-pagination";
 import "rc-pagination/assets/index.css";

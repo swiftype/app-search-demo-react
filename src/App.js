@@ -8,7 +8,7 @@ import Pagination from "./Pagination";
 import Results from "./Results";
 import Search from "./Search";
 import Totals from "./Totals";
-import Filters from "./Filters";
+import Facets from "./Facets";
 
 const HeaderBar = styled.div`
   color: rgb(255, 255, 255);
@@ -80,7 +80,15 @@ class App extends Component {
           <Route>
             {({ location, history }) => (
               <Search location={location} history={history}>
-                {({ query, results, pageState, updatePage, updateQuery }) => (
+                {({
+                  facets,
+                  pageState,
+                  query,
+                  queryState,
+                  results,
+                  updatePage,
+                  updateQuery
+                }) => (
                   <div className="App">
                     <HeaderBar>
                       <HeaderBarInner>
@@ -95,7 +103,7 @@ class App extends Component {
                     <Body>
                       <BodyInner>
                         <LeftColumn>
-                          <Filters />
+                          <Facets facets={facets} queryState={queryState} />
                         </LeftColumn>
                         <RightColumn>
                           <Totals {...pageState} />

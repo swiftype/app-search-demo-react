@@ -27,6 +27,7 @@ const QUERY_OPTIONS = {
       }
     },
     version: { raw: {} },
+    license: { raw: {} },
     description: {
       snippet: {
         size: 200,
@@ -56,6 +57,12 @@ const QUERY_OPTIONS = {
       }
     },
     homepage: { raw: {} }
+  },
+  facets: {
+    license: {
+      type: "value",
+      size: 10
+    }
   }
 };
 
@@ -69,6 +76,7 @@ const QUERY_OPTIONS = {
 */
 export default class Search extends Component {
   state = {
+    facets: {},
     pageState: {
       currentPage: 0,
       pageSize: 0,
@@ -110,13 +118,14 @@ export default class Search extends Component {
       .then(
         resultList => {
           this.setState({
-            results: resultList.results,
+            facets: resultList.info.facets,
             pageState: {
               currentPage: resultList.info.meta.page.current,
               pageSize: resultList.info.meta.page.size,
               totalPages: resultList.info.meta.page.total_pages,
               totalResults: resultList.info.meta.page.total_results
-            }
+            },
+            results: resultList.results
           });
         },
         error => {
@@ -139,12 +148,14 @@ export default class Search extends Component {
 
   render() {
     const { children } = this.props;
-    const { pageState, results } = this.state;
+    const { facets, pageState, results } = this.state;
     const { q } = this.getQueryState();
 
     return children({
+      facets,
       pageState,
       query: q,
+      queryState: this.getQueryState(),
       results,
       updatePage: this.updatePage,
       updateQuery: this.updateQuery

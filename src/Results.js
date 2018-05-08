@@ -107,6 +107,9 @@ export default function Results({ results }) {
                   ))
                 }
               </LineItem>
+              <LineItem label="License" value={getRaw(result, "license")}>
+                {value => value}
+              </LineItem>
 
               <LineItem label="Owners" value={getRaw(result, "owners")}>
                 {value => value.join(", ")}
