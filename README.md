@@ -30,16 +30,16 @@ You'll then need to configure this project to point to your newly created Engine
 ```bash
 # .env
 
-REACT_APP_HOST_KEY=<key goes here>
-REACT_APP_API_KEY=<key goes here>
-REACT_APP_SEARCH_KEY=<key goes here>
+REACT_APP_HOST_KEY=<Account key goes here>
+REACT_APP_API_KEY=<write privileged API key goes here>
+REACT_APP_SEARCH_KEY=<read-only API key goes here>
 ```
 
-From within the Engine Dashboard, navigate to "Access > API Keys". Copy the "Account Host Key", "api-key", and "search-key" from that screen and use them as values in the `.env` file, respectively.
+For more information on this, see the [Configuration](#configuring-your-search-app-with-api-credentials) section.
 
 ### Push data to the `node-modules` Engine
 
-This project doesn't have a backend API or database as many projects would. Instead, it simply pulls documents from a JSON file, and indexes them directly into App Search
+This project doesn't have a back-end API or database as many projects would. Instead, it simply pulls documents from a JSON file, and indexes them directly into App Search
 using the [swiftype-app-search-node](https://github.com/swiftype/swiftype-app-search-node) client. This JSON file doesn't
 exist yet, so the first thing to do is download that data file.
 
@@ -85,16 +85,9 @@ cd node-module-search/
 yarn add swiftype-app-search-javascript
 ```
 
-4.  Configure your app with your App Search credentials. The steps are listed in [Setup](#setup). The same `.env` file will work here, but note that since we're only querying, not indexing, you won't need your write-privileged API key, just the Host and read-only Search API key will do.
+4.  Configure the app with your App Search credentials, following the instructions listed in the [Configuration](#configuring-your-search-app-with-api-credentials) section.
 
-```bash
-# .env
-
-REACT_APP_HOST_KEY=<key goes here>
-REACT_APP_SEARCH_KEY=<key goes here>
-```
-
-4.  Replace `App.js` with the following:
+5.  Replace `App.js` with the following:
 
 ```javascript
 // src/App.js
@@ -131,32 +124,16 @@ class App extends Component {
   };
 
   updateResults = query => {
-    client
-      .search(query, {
-        search_fields: {
-          name: {},
-          description: {}
-        },
-        result_fields: {
-          id: { raw: {} },
-          name: {
-            raw: {}
-          },
-          description: {
-            raw: {}
-          }
-        }
-      })
-      .then(
-        resultList => {
-          this.setState({
-            results: resultList
-          });
-        },
-        error => {
-          console.log(`error: ${error}`);
-        }
-      );
+    client.search(query, {}).then(
+      resultList => {
+        this.setState({
+          results: resultList
+        });
+      },
+      error => {
+        console.log(`error: ${error}`);
+      }
+    );
   };
 
   render() {
@@ -203,7 +180,7 @@ For more information, visit the Swiftype App Search [documentation](https://swif
 
 You effectively have two options for accessing data from a React app.
 
-1.  Access the data through your own API, which queries your Engine on the backend.
+1.  Access the data through your own API, which queries your Engine on the back end.
 2.  Access the data through Swiftype's API, querying data directly in the front end using the [swiftype-app-search-javascript](https://github.com/swiftype/swiftype-app-search-javascript) client.
 
 Typically, you'll want to go with option 2, and query Swiftype's API directly from the front-end. Swiftype's App Search API
@@ -211,26 +188,28 @@ is highly optimized, so querying directly should give you the fastest search exp
 
 #### Configuring your search app with API credentials
 
-In order to use the Javascript client, you'll need to configure it with credentials. Here are a few approaches you might consider:
+In order to use the Javascript client, you'll need to configure it with credentials. The approach we use is to leverage the environment variable replacement mechanism that create-react-app [provides](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#adding-custom-environment-variables).
 
-1.  Configuration at build time
+To accomplish this, you simply create a file named `.env` in the root of your project directory, and configure it with the "Account Key" and a read-only API key.
 
-    This is the approach this example application uses. It reads the API credentials you provide at build time from `.env`, and
-    includes them as part of the built Javascript bundle. This is convenient as `create-react-app` has a mechanism built in for that, [out of the box](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#adding-custom-environment-variables). The drawback of this approach is that the built bundle is environment specific, so you couldn't use the same bundle in multiple environments.
+These values can be found within your [App Search dashboard](https://app.swiftype.com/as), under the "API Keys" section. Note that by default, you should already have 1 read-only API key prefixed with "search-".
 
-2.  Configuration at run time
+```bash
+# .env
 
-    An alternate approach would be configuring these environment variables as part of your host application, server side, and then passing them in through data attributes in the DOM:
+REACT_APP_HOST_KEY=<key goes here>
+REACT_APP_SEARCH_KEY=<key goes here>
+```
 
-    ```html
-    <div data-host-key="your_key_here" data-search-key="your_key_here" id="search" />
-    ```
+You can then consume them directly by looking them up in `process.env.<name>`.
 
-    The advantage of this is that your built bundle could now be deployed to multiple environments with different configuration.
-
-3.  Configuration through proxy
-
-    This approach would involve proxying API requests through your own API, which adds the appropriate authentication Headers. This would typically be implemented in order to hide your API key from public view, however, as long as you are using a read-only API key this should be unnecessary.
+```javascript
+const client = SwiftypeAppSearch.createClient({
+  accountHostKey: process.env.REACT_APP_HOST_KEY,
+  apiKey: process.env.REACT_APP_SEARCH_KEY,
+  engineName: "node-modules"
+});
+```
 
 ### State Management
 
@@ -486,7 +465,7 @@ Using these custom Link components lets us apply filters declaratively from anyw
 
 ### Faceted Search
 
-Faceted Search takes the idea of filtering one step further. In our example app, we decided to show three Facet filters, `license`, `keywords`, and `depencencies`. In order to get the details needed to build these filters, including values and counts, we simply passed some additional search options in our query in [Search.js](src/Search.js).
+Faceted Search takes the idea of filtering one step further. In our example app, we decided to show three Facet filters, `license`, `keywords`, and `dependencies`. In order to get the details needed to build these filters, including values and counts, we simply passed some additional search options in our query in [Search.js](src/Search.js).
 
 ```json
 facets: {
@@ -516,10 +495,4 @@ Note that our implementation is simplistic. Other things you might consider incl
 
 There are many more options for Facets, be sure to check out the full set of options in the docs!
 
-### Click through tracking
-
-### Testing
-
-```
-
-```
+### Click Through Tracking
