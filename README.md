@@ -14,7 +14,7 @@ To get started, simply clone this repository and run `yarn` to install dependenc
 
 ```
 # Clone the repository
-git clone git@github.com:JasonStoltz/react-app-search-demo.git
+git clone git@github.com:swiftype/react-app-search-demo.git
 cd react-app-search-demo
 
 # Install dependencies
@@ -35,7 +35,7 @@ REACT_APP_API_KEY=<key goes here>
 REACT_APP_SEARCH_KEY=<key goes here>
 ```
 
-From within the Engine Dashbord, navigate to "Access > API Keys". Copy the "Account Host Key", "api-key", and "search-key" from that screen and use them as values in the `.env` file, respectively.
+From within the Engine Dashboard, navigate to "Access > API Keys". Copy the "Account Host Key", "api-key", and "search-key" from that screen and use them as values in the `.env` file, respectively.
 
 ### Push data to the `node-modules` Engine
 
@@ -44,18 +44,18 @@ using the [swiftype-app-search-node](https://github.com/swiftype/swiftype-app-se
 exist yet, so the first thing to do is download that data file.
 
 ```bash
-# Download data/node-modules.js
+# Download data/node-modules.json
 yarn run init-data
 ```
 
-If that ran succesfully, a `data/node-modules.json` file should now exist. Now index the data you've downloaded into your App Search Engine:
+If that ran successfully, a `data/node-modules.json` file should now exist. Now index the data you've downloaded into your App Search Engine:
 
 ```bash
 # Index data from data/node-modules.json into the node-modules Engine
 yarn run index-data
 ```
 
-If you return to your Engine's Dashboard, you should now see the indexed documents. Once there, you'll need to define types for your Schema. By default, everything should be of type "Text", which is correct for the most part. The only thing you'll need to is change the two date fields, `created` and `modified`, to `Date` types.
+If you return to your Engine's Dashboard, you should now see the indexed documents. Once there, you'll need to define types for your Schema. By default, everything should be of type `Text`, which is correct for the most part. The only thing you'll need to do is change the two date fields, `created` and `modified`, to `Date` types.
 
 ### Run the search app
 
@@ -85,7 +85,7 @@ cd node-module-search/
 yarn add swiftype-app-search-javascript
 ```
 
-4.  Configure your app with your App Search credentials. The steps are listed in [Setup](#setup). The same `.env` file will work here, but note that since we're only querying, not indexing, you won't need your write-privledged API key, just the Host and read-only Search API key will do.
+4.  Configure your app with your App Search credentials. The steps are listed in [Setup](#setup). The same `.env` file will work here, but note that since we're only querying, not indexing, you won't need your write-privileged API key, just the Host and read-only Search API key will do.
 
 ```bash
 # .env
@@ -185,11 +185,11 @@ export default App;
 yarn start
 ```
 
-At this point, you should have a fully functioning, ableit simple, React-based interface for your App Search Engine. Huzzah!
+At this point, you should have a fully functioning, albeit simple, React-based interface for your App Search Engine. Huzzah!
 
 ![Create Engine Screenshot](readme_images/basic.png)
 
-Don't stop there though. This app is super simple and it won't get your very far. Review the example code and some of the [Topics](#topics) listed below to scale this up to meet your needs.
+Don't stop there though. This app is super simple and it won't get you very far. Review the example code and some of the [Topics](#topics) listed below to scale this up to meet your needs.
 
 ## Topics
 
@@ -226,7 +226,7 @@ In order to use the Javascript client, you'll need to configure it with credenti
     <div data-host-key="your_key_here" data-search-key="your_key_here" id="search" />
     ```
 
-    The advantage of this, is that your built bundle could now be deployed to multiple environments, with different configuration.
+    The advantage of this is that your built bundle could now be deployed to multiple environments with different configuration.
 
 3.  Configuration through proxy
 
@@ -234,7 +234,7 @@ In order to use the Javascript client, you'll need to configure it with credenti
 
 ### State Management
 
-In the React ecosystem, there are many solutions for State Management. Any solution you choose will work with Swiftype; be it, Redux, Mobx, or whatever else. Regardless of what you pick, here are a couple of guidelines to help.
+In the React ecosystem, there are many solutions for State Management. Any solution you choose will work with Swiftype; be it Redux, Mobx, or whatever else. Regardless of what you pick, here are a couple of guidelines to help.
 
 #### Manage your search state in the url
 
@@ -347,7 +347,7 @@ render() {
 
 Using a central store is a smart decision for a search interface. Search screens often require data in many different disconnected pieces of the view (think totals, paging, filters, etc.), so having this data in one central store is very clean and ensures data is accessible by all of these pieces.
 
-You may choose to use something like Redux or Mobx, which would be excellent choices. For our app, which is fairly simple, we chose to simply use a single, high-level component to manage or store and actions. See [Search.js](src/Search.js). This is a simplistic approach, that simply encapsulates all search handlers and data. It uses the Render Props pattern (https://reactjs.org/docs/render-props.html) to pass these actions and data down to invididual components in the UI.
+You may choose to use something like Redux or Mobx, which would be excellent choices. For our app, which is fairly simple, we chose to simply use a single, high-level component to manage our store and actions. See [Search.js](src/Search.js). This is a simplistic approach, that simply encapsulates all search handlers and data. It uses the Render Props pattern (https://reactjs.org/docs/render-props.html) to pass these actions and data down to individual components in the UI.
 
 ex.
 
@@ -365,7 +365,7 @@ ex.
     <div>
       <Totals {...pageState} />
       <SearchBox query={query} onChange={updateQuery} />
-      <Filtes filters={filters} onChange={updateFilters} />
+      <Filters filters={filters} onChange={updateFilters} />
       <Results results={results} />
       <Paging {...pageState} onPageChange={updatePage} />
     </div>
@@ -427,7 +427,7 @@ By "live", we simply mean a search box that reacts to user input "live" as a use
     </Search>
     ```
 
-#### Deboucing
+#### Debouncing
 
 Implementing a "live" search box will generate a large volume of requests to the server. To reduce the number of requests sent to the server, it can be useful to implement a `debounce` on your `onChange` handler. We do this using [lodash](https://lodash.com/docs/4.17.10#debounce).
 
@@ -447,7 +447,7 @@ Note: The App Search API currently only supports up to 100 pages, so be sure to 
 
 Filtering lets us further refine search query results. Our approach, as discussed in the [State Management](#state-management) section, is to store all search state in the url.
 
-For example, in the following url, we are querying by the term "express", and then filtering the reults to include only packes that have "node" listed in their "dependencies", and a "license" of "MIT".
+For example, in the following url, we are querying by the term "express", and then filtering the results to include only packages that have "node" listed in their "dependencies", and a "license" of "MIT".
 
 ```
 http://localhost:3000/?q=express&dependencies=node&license=MIT
@@ -464,7 +464,7 @@ filters: {
 }
 ```
 
-Once that is in place, you should be able to manually add filters to your search string and see the results change. The only left to do, then, is actually implement code to update the filter state in the url.
+Once that is in place, you should be able to manually add filters to your search string and see the results change. The only thing left to do, then, is actually implement code to update the filter state in the url.
 
 We do this through two components, which are simple wrappers around React Router's [Link](https://reacttraining.com/react-router/web/api/Link) component.
 
@@ -482,7 +482,7 @@ We do this through two components, which are simple wrappers around React Router
 <RemoveFilterLink name="dependencies" value="node" queryState={queryState}>>
 ```
 
-Using these custom Link components lets us apply filters delcaratively from anywhere in our UI.
+Using these custom Link components lets us apply filters declaratively from anywhere in our UI.
 
 ### Faceted Search
 
@@ -509,7 +509,7 @@ This in turn gives us all the information we require to build the Faceted Search
 
 The code for this can be found in our [Facets](src/Facets.js) component.
 
-Note that our implementation it simplistic. Other things might consider including are:
+Note that our implementation is simplistic. Other things you might consider including are:
 
 * The ability to select more than one filter value
 * Having a "Show more" button so that you can see more than the first 10 Facet values
