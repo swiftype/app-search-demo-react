@@ -23,7 +23,7 @@ yarn
 
 ### Create an Engine in App Search
 
-Before setting up this project, you will need to create a new Engine on [Swiftype App Search](https://swiftype.com/app-search). Name it `node-modules` (this is important).
+Before setting up this project, you will need to create a new Engine on App Search. Name it `node-modules` (this is important). Specific instructions explaining how to do this can be found in the [Getting Started](https://swiftype.com/documentation/app-search/getting-started#sign-up) guide, Steps 1 & 2.
 
 You'll then need to configure this project to point to your newly created Engine, so create a `.env` file at the root of this project using the following format:
 
@@ -192,7 +192,7 @@ In order to use the Javascript client, you'll need to configure it with credenti
 
 To accomplish this, you simply create a file named `.env` in the root of your project directory, and configure it with the "Account Key" and a read-only API key.
 
-These values can be found within your [App Search dashboard](https://app.swiftype.com/as), under the "API Keys" section. Note that by default, you should already have 1 read-only API key prefixed with "search-".
+These values can be found within your [App Search dashboard](https://app.swiftype.com/as), under the "API Keys" section. Note that by default, you should already have 1 read-only API key prefixed with "search-". For additional help locating your API keys, see the [Locating your API credentials](https://swiftype.com/documentation/app-search/getting-started#credentials) guide.
 
 ```bash
 # .env
