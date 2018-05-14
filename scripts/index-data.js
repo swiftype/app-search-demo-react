@@ -21,7 +21,7 @@ const getUrlFunction = () => {
 };
 const SwiftypeAppSearchClient = require("swiftype-app-search-node");
 const accountHostKey = process.env.REACT_APP_HOST_KEY;
-const apiKey = process.env.REACT_APP_SEARCH_KEY;
+const apiKey = process.env.REACT_APP_API_KEY;
 const client = new SwiftypeAppSearchClient(
   accountHostKey,
   apiKey,
