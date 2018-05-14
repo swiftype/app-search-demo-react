@@ -5,7 +5,6 @@ This example demonstrates how to build a React-based search interface using Swif
 This README is broken down into the following sections:
 
 * [Setup](#setup) - Follow these instructions to run the example search app.
-* [React Quick Start](#react-quick-start) - Build your own React-based search app in a few simple steps.
 * [Topics](#topics) - Considerations when building a React-based search app.
 
 ## Setup
@@ -40,20 +39,14 @@ For more information on this, see the [Configuration](#configuring-your-search-a
 ### Push data to the `node-modules` Engine
 
 This project doesn't have a back-end API or database as many projects would. Instead, it simply pulls documents from a JSON file, and indexes them directly into App Search
-using the [swiftype-app-search-node](https://github.com/swiftype/swiftype-app-search-node) client. This JSON file doesn't
-exist yet, so the first thing to do is download that data file.
-
-```bash
-# Download data/node-modules.json
-yarn run init-data
-```
-
-If that ran successfully, a `data/node-modules.json` file should now exist. Now index the data you've downloaded into your App Search Engine:
+using the [swiftype-app-search-node](https://github.com/swiftype/swiftype-app-search-node) client.
 
 ```bash
 # Index data from data/node-modules.json into the node-modules Engine
 yarn run index-data
 ```
+
+Note: `data/node-modules.json` already exists, but if you'd like to refresh the data there, you can use the command `yarn run init-data` to download a fresh copy.
 
 If you return to your Engine's Dashboard, you should now see the indexed documents. Once there, you'll need to define types for your Schema. By default, everything should be of type `Text`, which is correct for the most part. The only thing you'll need to do is change the two date fields, `created` and `modified`, to `Date` types.
 
@@ -64,109 +57,6 @@ At this point, your engine is ready and all that is left to do is run the app.
 ```bash
 yarn start
 ```
-
-## React Quick Start
-
-Getting a React-based front-end up and running for App Search is dead simple. Here are a few quick steps to create a basic front-end of your own:
-
-1.  Set up and populate an Engine. To do so, just pull this repo down and follow the instructions in [Setup](#setup).
-
-2.  Create a new app with `create-react-app`
-
-```bash
-yarn global add create-react-app
-create-react-app node-module-search
-cd node-module-search/
-```
-
-3.  Add the App Search Javascript Client:
-
-```bash
-yarn add swiftype-app-search-javascript
-```
-
-4.  Configure the app with your App Search credentials, following the instructions listed in the [Configuration](#configuring-your-search-app-with-api-credentials) section.
-
-5.  Replace `App.js` with the following:
-
-```javascript
-// src/App.js
-
-import React, { Component } from "react";
-import * as SwiftypeAppSearch from "swiftype-app-search-javascript";
-
-const client = SwiftypeAppSearch.createClient({
-  accountHostKey: process.env.REACT_APP_HOST_KEY,
-  apiKey: process.env.REACT_APP_SEARCH_KEY,
-  engineName: "node-modules"
-});
-
-class App extends Component {
-  state = {
-    query: "",
-    results: null
-  };
-
-  componentDidMount() {
-    this.updateResults(this.state.query);
-  }
-
-  handleChange = e => {
-    const query = e.target.value;
-    this.setState(
-      {
-        query
-      },
-      () => {
-        this.updateResults(query);
-      }
-    );
-  };
-
-  updateResults = query => {
-    client.search(query, {}).then(
-      resultList => {
-        this.setState({
-          results: resultList
-        });
-      },
-      error => {
-        console.log(`error: ${error}`);
-      }
-    );
-  };
-
-  render() {
-    const { query, results } = this.state;
-    if (!results) return null;
-    return (
-      <div className="App">
-        <input type="text" value={query} onChange={this.handleChange} />
-        {results.results.map(result => (
-          <div key={result.getRaw("id")}>
-            <h3>{result.getRaw("name")}</h3>
-            <div>{result.getRaw("description")}</div>
-          </div>
-        ))}
-      </div>
-    );
-  }
-}
-
-export default App;
-```
-
-5.  Run your new search app
-
-```
-yarn start
-```
-
-At this point, you should have a fully functioning, albeit simple, React-based interface for your App Search Engine. Huzzah!
-
-![Create Engine Screenshot](readme_images/basic.png)
-
-Don't stop there though. This app is super simple and it won't get you very far. Review the example code and some of the [Topics](#topics) listed below to scale this up to meet your needs.
 
 ## Topics
 
