@@ -360,18 +360,18 @@ Using these custom Link components lets us apply filters declaratively from anyw
 Faceted Search takes the idea of filtering one step further. In our example app, we decided to show three Facet filters, `license`, `keywords`, and `dependencies`. In order to get the details needed to build these filters, including values and counts, we simply passed some additional search options in our query in [Search.js](src/Search.js).
 
 ```json
-facets: {
-  license: {
-    type: "value",
-    size: 10
+"facets": {
+  "license": {
+    "type": "value",
+    "size": 10
   },
-  keywords: {
-    type: "value",
-    size: 10
+  "keywords": {
+    "type": "value",
+    "size": 10
   },
-  dependencies: {
-    type: "value",
-    size: 10
+  "dependencies": {
+    "type": "value",
+    "size": 10
   }
 }
 ```
