@@ -7422,8 +7422,8 @@ sw-toolbox@^3.4.0:
     serviceworker-cache-polyfill "^4.0.0"
 
 swiftype-app-search-javascript@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/swiftype-app-search-javascript/-/swiftype-app-search-javascript-1.0.3.tgz#c926ad279eefaf9942daba134c0d3dbce4b51232"
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/swiftype-app-search-javascript/-/swiftype-app-search-javascript-1.1.0.tgz#63548707e1f622c87b37fd80cc64546aa5aa4533"
   dependencies:
     lodash "^4.17.4"
 

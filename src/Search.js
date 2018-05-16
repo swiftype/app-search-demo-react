@@ -102,6 +102,8 @@ export default class Search extends Component {
       totalPages: 0,
       totalResults: 0
     },
+    query: "",
+    requestId: "",
     results: []
   };
 
@@ -149,6 +151,8 @@ export default class Search extends Component {
               totalPages: resultList.info.meta.page.total_pages,
               totalResults: resultList.info.meta.page.total_results
             },
+            query: query,
+            requestId: resultList.info.meta.request_id,
             results: resultList.results
           });
         },
@@ -157,6 +161,17 @@ export default class Search extends Component {
         }
       );
   }, 200);
+
+  trackClick = ({ query, documentId, requestId }) => {
+    client.click({ query, documentId, requestId });
+    // We'll return undefined here. We don't necessarily want calling code to wait for a response.
+  };
+
+  // This is so that we don't have to pass `requestId` and `query` deep down
+  // the tree.
+  curriedTrackClick = (query, requestId) => documentId => {
+    this.trackClick({ query, requestId, documentId });
+  };
 
   getQueryState = () => queryString.parse(this.props.location.search);
 
@@ -172,18 +187,32 @@ export default class Search extends Component {
 
   render() {
     const { children } = this.props;
-    const { facets, filters, pageState, results } = this.state;
-    const { q } = this.getQueryState();
-
-    return children({
+    const {
       facets,
       filters,
       pageState,
+      query,
+      requestId,
+      results
+    } = this.state;
+    const { q } = this.getQueryState();
+
+    return children({
       query: q,
       queryState: this.getQueryState(),
-      results,
-      updatePage: this.updatePage,
-      updateQuery: this.updateQuery
+      searchActions: {
+        trackClick: this.curriedTrackClick(query, requestId),
+        updatePage: this.updatePage,
+        updateQuery: this.updateQuery
+      },
+      searchResults: {
+        facets,
+        filters,
+        pageState,
+        query,
+        requestId,
+        results
+      }
     });
   }
 }

@@ -216,27 +216,25 @@ render() {
 
 Using a central store is a smart decision for a search interface. Search screens often require data in many different disconnected pieces of the view (think totals, paging, filters, etc.), so having this data in one central store is very clean and ensures data is accessible by all of these pieces.
 
-You may choose to use something like Redux or Mobx, which would be excellent choices. For our app, which is fairly simple, we chose to simply use a single, high-level component to manage our store and actions. See [Search.js](src/Search.js). This is a simplistic approach, that simply encapsulates all search handlers and data. It uses the Render Props pattern (https://reactjs.org/docs/render-props.html) to pass these actions and data down to individual components in the UI.
+You may choose to use something like Redux or Mobx, which would be excellent choices. For our app, which is fairly simple, we chose to simply use a single, high-level component to manage our store and actions. See [Search.js](src/Search.js). This is a simplistic approach, that simply encapsulates all search actions and state. It uses the Render Props pattern (https://reactjs.org/docs/render-props.html) to pass these actions and state down to individual components in the UI.
 
 ex.
 
 ```jsx
 <Search>
-  {({
-    query,
-    results,
-    filters,
-    pageState,
-    updatePage,
-    updateQuery,
-    updateFilters
-  }) => (
+  {({ query, searchActions, searchResults }) => (
     <div>
-      <Totals {...pageState} />
-      <SearchBox query={query} onChange={updateQuery} />
-      <Filters filters={filters} onChange={updateFilters} />
-      <Results results={results} />
-      <Paging {...pageState} onPageChange={updatePage} />
+      <Totals {...searchResults.pageState} />
+      <SearchBox query={query} onChange={searchActions.updateQuery} />
+      <Filters
+        filters={searchResults.filters}
+        onChange={searchActions.updateFilters}
+      />
+      <Results results={searchResults.results} />
+      <Paging
+        {...searchResults.pageState}
+        onPageChange={searchActions.updatePage}
+      />
     </div>
   )}
 </Search>
@@ -261,9 +259,9 @@ By "live", we simply mean a search box that reacts to user input "live" as a use
 
     ```jsx
     <Search>
-      {({ query, updateQuery }) => (
+      {({ query, searchActions }) => (
         <div>
-          <SearchBox query={query} onChange={updateQuery} />
+          <SearchBox query={query} onChange={searchActions.updateQuery} />
         </div>
       )}
     </Search>
@@ -275,9 +273,9 @@ By "live", we simply mean a search box that reacts to user input "live" as a use
 
     ```jsx
     <Search>
-      {({ query, updateQuery, results }) => (
+      {({ query, searchActions, results }) => (
         <div>
-          <SearchBox query={query} onChange={updateQuery} />
+          <SearchBox query={query} onChange={searchActions.updateQuery} />
           <Results results={results} />
         </div>
       )}
@@ -288,9 +286,13 @@ By "live", we simply mean a search box that reacts to user input "live" as a use
 
     ```jsx
     <Search>
-      {({ query, updateQuery, results }) => (
+      {({ query, searchActions, searchResults }) => (
         <div>
-          <SearchBox query={query} onChange={updateQuery} results={results} />
+          <SearchBox
+            query={query}
+            onChange={searchActions.updateQuery}
+            results={searchResults.results}
+          />
         </div>
       )}
     </Search>
@@ -361,7 +363,7 @@ Faceted Search takes the idea of filtering one step further. In our example app,
 facets: {
   license: {
     type: "value",
-    size: 10 // Since there are many many values for each of these, we limited them to just 10 values each.
+    size: 10
   },
   keywords: {
     type: "value",
@@ -386,3 +388,13 @@ Note that our implementation is simplistic. Other things you might consider incl
 There are many more options for Facets, be sure to check out the full set of options in the docs!
 
 ### Click Through Tracking
+
+Use the [click](https://github.com/swiftype/swiftype-app-search-javascript#click-through-tracking) method available
+in the JavaScript Client.
+
+In our implementation, we do the following:
+
+1.  Create a `trackClick` action in [Search.js](src/Search.js), which calls `client.click`.
+2.  Add an `onClick` handler to individual result items, which calls `trackClick` with the corresponding result ID. See [Results.js](src/Results.js).
+
+For more information click through tracking and analytics, see the [documentation](https://swiftype.com/documentation/app-search/api/clickthrough).

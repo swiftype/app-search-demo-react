@@ -80,16 +80,7 @@ class App extends Component {
           <Route>
             {({ location, history }) => (
               <Search location={location} history={history}>
-                {({
-                  facets,
-                  filters,
-                  pageState,
-                  query,
-                  queryState,
-                  results,
-                  updatePage,
-                  updateQuery
-                }) => (
+                {({ query, queryState, searchActions, searchResults }) => (
                   <div className="App">
                     <HeaderBar>
                       <HeaderBarInner>
@@ -97,7 +88,9 @@ class App extends Component {
                         <Title>Package Search</Title>
                         <StyledInput
                           value={query}
-                          onChange={e => updateQuery(e.target.value)}
+                          onChange={e =>
+                            searchActions.updateQuery(e.target.value)
+                          }
                         />
                       </HeaderBarInner>
                     </HeaderBar>
@@ -105,15 +98,22 @@ class App extends Component {
                       <BodyInner>
                         <LeftColumn>
                           <Facets
-                            facets={facets}
-                            filters={filters}
+                            facets={searchResults.facets}
+                            filters={searchResults.filters}
                             queryState={queryState}
                           />
                         </LeftColumn>
                         <RightColumn>
-                          <Totals {...pageState} />
-                          <Results results={results} queryState={queryState} />
-                          <Pagination {...pageState} onPage={updatePage} />
+                          <Totals {...searchResults.pageState} />
+                          <Results
+                            results={searchResults.results}
+                            queryState={queryState}
+                            trackClick={searchActions.trackClick}
+                          />
+                          <Pagination
+                            {...searchResults.pageState}
+                            onPage={searchActions.updatePage}
+                          />
                         </RightColumn>
                       </BodyInner>
                     </Body>

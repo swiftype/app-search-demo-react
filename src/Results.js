@@ -57,7 +57,7 @@ function getSnippet(result, field) {
   return (result.data[field] || {}).snippet;
 }
 
-export default function Results({ results, queryState }) {
+export default function Results({ results, queryState, trackClick }) {
   return (
     <StyledResults>
       {results.map(result => (
@@ -68,6 +68,7 @@ export default function Results({ results, queryState }) {
               rel="noopener noreferrer"
               href={`https://www.npmjs.com/package/${getRaw(result, "name")}`}
               dangerouslySetInnerHTML={createMarkup(getSnippet(result, "name"))}
+              onClick={e => trackClick(getRaw(result, "id"))}
             />
           </Panel.Header>
           <Box p={3}>
