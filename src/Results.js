@@ -116,8 +116,8 @@ export default function Results({ results, queryState }) {
               </LineItem>
               <LineItem label="Keywords" value={getRaw(result, "keywords")}>
                 {values =>
-                  values.map(value => (
-                    <LinkContainer key={value}>
+                  values.map((value, index) => (
+                    <LinkContainer key={`${value}-${index}`}>
                       <FilterLink
                         name="keywords"
                         value={value}
