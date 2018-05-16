@@ -11,13 +11,13 @@ function Facet({ name, children }) {
   );
 }
 
-function FacetValue({ facetName, facetValue: [value, count], queryState }) {
+function FacetValue({ facetName, facetValue, queryState }) {
   return (
     <li>
-      <FilterLink name={facetName} value={value} queryState={queryState}>
-        {value}
+      <FilterLink name={facetName} value={facetValue["value"]} queryState={queryState}>
+        {facetValue["value"]}
       </FilterLink>{" "}
-      ({count})
+      ({facetValue["count"]})
     </li>
   );
 }
@@ -51,11 +51,11 @@ function SingleValueFacetSelection({
         />
       )}
       {!filter &&
-        facet[0].data.map(facetValue => (
+        facet[0].data.map((facetValue, index) => (
           <FacetValue
             facetName={facetName}
             facetValue={facetValue}
-            key={facetValue[0]}
+            key={`${facetValue["name"]}-${index}`}
             queryState={queryState}
           />
         ))}
