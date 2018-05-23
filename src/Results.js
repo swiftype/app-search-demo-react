@@ -1,48 +1,26 @@
 import React from "react";
-import styled from "styled-components";
-import { Panel, Box, Link } from "rebass";
-
 import FilterLink from "./FilterLink";
-
-const LinkContainer = styled.span``;
-
-const Result = Panel.extend`
-  em {
-    font-weight: bold;
-  }
-
-  ${LinkContainer} + ${LinkContainer} {
-    &:before {
-      content: ', '
-    }
-  }
-`;
-
-const StyledResults = styled.div`
-  ${Result} + ${Result} {
-    margin-top: 20px;
-  }
-`;
-
-const List = styled.ul`
-  margin: 0;
-  padding: 0;
-  list-style: none;
-`;
-
-const StyledLink = Link.extend`
-  color: white;
-  text-decoration: none;
-`;
 
 function LineItem({ label, value, children }) {
   if (!value) return null;
   if (Array.isArray(value) && !value.length) return null;
   return (
     <li>
-      {label}: {children(value)}
+      <strong>{label}</strong>: {children(value)}
     </li>
   );
+}
+
+function Lisence({ value, children }) {
+  if (!value) return null;
+  if (Array.isArray(value) && !value.length) return null;
+  return <div class="result__lisence">{value}</div>;
+}
+
+function Description({ value, children }) {
+  if (!value) return null;
+  if (Array.isArray(value) && !value.length) return null;
+  return <p class="result__description">{value}</p>;
 }
 
 function createMarkup(html) {
@@ -59,34 +37,33 @@ function getSnippet(result, field) {
 
 export default function Results({ results, queryState, trackClick }) {
   return (
-    <StyledResults>
+    <ul>
       {results.map(result => (
-        <Result key={getRaw(result, "name")}>
-          <Panel.Header color="white" bg="#7F7F7F">
-            <StyledLink
+        <li class="result" key={getRaw(result, "name")}>
+          <div class="result__header">
+            <a
+              class="result__title"
+              href={`https://www.npmjs.com/package/${getRaw(result, "name")}`}
               target="_blank"
               rel="noopener noreferrer"
-              href={`https://www.npmjs.com/package/${getRaw(result, "name")}`}
-              dangerouslySetInnerHTML={createMarkup(getSnippet(result, "name"))}
               onClick={e => trackClick(getRaw(result, "id"))}
+              dangerouslySetInnerHTML={createMarkup(getSnippet(result, "name"))}
             />
-          </Panel.Header>
-          <Box p={3}>
-            <List>
-              <LineItem
-                label="Description"
-                value={getSnippet(result, "description")}
-              >
-                {value => (
-                  <span dangerouslySetInnerHTML={createMarkup(value)} />
-                )}
-              </LineItem>
+            <Lisence value={getRaw(result, "license")} />
+          </div>
+
+          <div class="result__body">
+            <Description value={getSnippet(result, "description")} />
+            <ul class="result__details">
               <LineItem label="Version" value={getRaw(result, "version")}>
-                {value => value}
+                {value => <span class="result__version">{value}</span>}
               </LineItem>
               <LineItem label="Home Page" value={getRaw(result, "homepage")}>
                 {value => (
-                  <a target="_blank" href={getRaw(result, "homepage")}>
+                  <a
+                    target="_blank subtle-link"
+                    href={getRaw(result, "homepage")}
+                  >
                     {value}
                   </a>
                 )}
@@ -97,7 +74,7 @@ export default function Results({ results, queryState, trackClick }) {
               >
                 {values =>
                   values.map(value => (
-                    <LinkContainer key={value}>
+                    <span key={value}>
                       <FilterLink
                         name="dependencies"
                         value={value}
@@ -105,20 +82,17 @@ export default function Results({ results, queryState, trackClick }) {
                       >
                         {value}
                       </FilterLink>
-                    </LinkContainer>
+                    </span>
                   ))
                 }
               </LineItem>
               <LineItem label="License" value={getRaw(result, "license")}>
                 {value => value.join(", ")}
               </LineItem>
-              <LineItem label="Owners" value={getRaw(result, "owners")}>
-                {value => value.join(", ")}
-              </LineItem>
               <LineItem label="Keywords" value={getRaw(result, "keywords")}>
                 {values =>
                   values.map((value, index) => (
-                    <LinkContainer key={`${value}-${index}`}>
+                    <span key={`${value}-${index}`}>
                       <FilterLink
                         name="keywords"
                         value={value}
@@ -126,14 +100,22 @@ export default function Results({ results, queryState, trackClick }) {
                       >
                         {value}
                       </FilterLink>
-                    </LinkContainer>
+                    </span>
                   ))
                 }
               </LineItem>
-            </List>
-          </Box>
-        </Result>
+            </ul>
+          </div>
+
+          <div class="result__footer">
+            <div class="result__owner">
+              <LineItem label="Owners" value={getRaw(result, "owners")}>
+                {value => value.join(", ")}
+              </LineItem>
+            </div>
+          </div>
+        </li>
       ))}
-    </StyledResults>
+    </ul>
   );
 }
