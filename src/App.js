@@ -7,10 +7,8 @@ import Search from "./Search";
 import Totals from "./Totals";
 import Facets from "./Facets";
 
-import appSearchIcon from "./icons/icon-app-search-bb.svg";
 import packageIcon from "./icons/icon-package.svg";
 import poweredBy from "./images/powered-by@2x.png";
-import poweredByWhite from "./images/powered-by--white@2x.png";
 
 class App extends Component {
   render() {
