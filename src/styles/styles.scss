@@ -72,6 +72,26 @@ a.subtle-link {
   font-family: "Roboto", sans-serif;
 }
 
+.site-background {
+  display: block;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  margin: auto;
+  background: $backgroundColor;
+  background-size: cover;
+  background-position: top;
+  background-repeat: no-repeat;
+  // transition-property: transform, background-color;
+  // transition: 0.5s $easeInOutCubic;
+  transform: translateY(0px);
+
+  // .active-search & {
+  //   transform: translateY(0 - $offset);
+  //   opacity: 0.0;
+  // }
+}
+
 .search-demo {
   width: 100%;
   display: flex;
@@ -94,25 +114,7 @@ a.subtle-link {
     }
   }
 
-  &__background {
-    display: block;
-    position: absolute;
-    width: 100vw;
-    height: 100vh;
-    margin: auto;
-    background: $backgroundColor;
-    background-size: cover;
-    background-position: top;
-    background-repeat: no-repeat;
-    transition-property: transform, background-color;
-    transition: 0.5s $easeInOutCubic;
-    transform: translateY(0px);
 
-    .active-search & {
-      transform: translateY(0 - $offset);
-      opacity: 0.0;
-    }
-  }
 
   &__header {
     width: 100%;
