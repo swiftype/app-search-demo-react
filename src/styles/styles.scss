@@ -61,7 +61,6 @@ a.subtle-link {
 }
 
 .powered-by {
-
   img {
     width: 118.50px;
     height: 14px;
@@ -71,7 +70,6 @@ a.subtle-link {
 .app-container {
   background: $backgroundColor;
   font-family: "Roboto", sans-serif;
-
 }
 
 .search-demo {
@@ -88,13 +86,11 @@ a.subtle-link {
 
   &__content {
     overflow: hidden;
-    // height: 100vh;
     transition-property: height;
     transition: 0.5s $easeInOutCubic;
 
     .active-search & {
       overflow: auto;
-      // height: calc(100vh + 175px);
     }
   }
 
@@ -103,7 +99,8 @@ a.subtle-link {
     position: absolute;
     width: 100vw;
     height: 100vh;
-    background: url($wavesImage);
+    margin: auto;
+    background: $backgroundColor;
     background-size: cover;
     background-position: top;
     background-repeat: no-repeat;
@@ -148,33 +145,28 @@ a.subtle-link {
   }
 
   &__icon-wrap {
-    background: white;
-    border-radius: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 80px;
     height: 80px;
     margin: auto auto 20px auto;
-    // box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2);
   }
 
   &__icon {
     margin-left: 4px;
-    width: 55px;
-    margin-top: 2px;
+    width: 80px;
   }
 
   &__title {
-    color: white;
-    font-weight: 900;
+    color: #3B454F;
+    font-weight: 100;
     font-size: 34px;
     margin-bottom: 0.5em;
   }
 
   &__input-wrapper {
     display: flex;
-    // max-width: $widthLimit;
     max-width: 80vw;
     border-radius: 6px;
     border: 1px solid #dce2e9;
@@ -184,7 +176,7 @@ a.subtle-link {
     height: 80px;
     align-items: stretch;
     padding: 0.5rem;
-    margin: 20px auto 0 auto;
+    margin: 60px auto 0 auto;
     box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
     transition-property: margin, max-width;
     transition: 0.5s $easeInOutCubic;
@@ -204,9 +196,7 @@ a.subtle-link {
       border-top-color: white;
       border-right-color: white;
       border-left-color: white;
-      // margin: 0vw;
       max-width: calc(100% + 0px);
-      // max-width: 100%;
       width: 100%;
       margin: auto;
     }
@@ -243,10 +233,6 @@ a.subtle-link {
     transform: translateY(100px);
 
     .active-search & {
-
-    }
-
-    .active-search & {
       position: static;
       transform: translateY(0px);
       opacity: 1.0;
@@ -254,14 +240,12 @@ a.subtle-link {
   }
 }
 
-
 .search-results {
   display: flex;
   max-width: $widthLimit;
   padding: 1rem 2rem 4rem 2rem;
   margin: auto;
 }
-
 
 .facets {
   padding: 2rem 0;
@@ -341,7 +325,6 @@ a.subtle-link {
 
     &:after {
       content: ' results';
-
     }
   }
 }
@@ -361,14 +344,6 @@ a.subtle-link {
   &__result-count {
     font-size: 12px;
     color: #4A4B4B;
-  }
-
-  &__body {
-
-  }
-
-  &__footer {
-
   }
 }
 
@@ -459,7 +434,6 @@ a.subtle-link {
           }
         }
       }
-
     }
   }
 

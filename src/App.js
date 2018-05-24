@@ -8,6 +8,8 @@ import Totals from "./Totals";
 import Facets from "./Facets";
 
 import appSearchIcon from "./icons/icon-app-search-bb.svg";
+import packageIcon from "./icons/icon-package.svg";
+import poweredBy from "./images/powered-by@2x.png";
 import poweredByWhite from "./images/powered-by--white@2x.png";
 
 class App extends Component {
@@ -31,20 +33,20 @@ class App extends Component {
                       <div class="search-demo__headings">
                         <div className="search-demo__icon-wrap">
                           <img
-                            src={appSearchIcon}
-                            alt="App Search Icon"
+                            src={packageIcon}
+                            alt="Dog Icon"
                             class="search-demo__icon"
                           />
                         </div>
-                        <h1 class="search-demo__title">Elastic App Search</h1>
+                        <h1 class="search-demo__title">Package Search</h1>
                         <h3 class="search-demo__sub-heading powered-by">
-                          <img src={poweredByWhite} alt="Powered by Swiftype" />
+                          <img src={poweredBy} alt="Powered by Swiftype" />
                         </h3>
                       </div>
                       <div class="search-demo__input-wrapper">
                         <input
                           class="search-demo__text-input"
-                          placeholder="Search npm modules&#8230;"
+                          placeholder="Search node packages&#8230;"
                           value={query}
                           onChange={e =>
                             searchActions.updateQuery(e.target.value)
