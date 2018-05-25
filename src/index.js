@@ -1,14 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { injectGlobal } from "styled-components";
 
 import App from "./App";
 import registerServiceWorker from "./registerServiceWorker";
+import "./styles/styles.css";
 
-injectGlobal`
-  * { box-sizing: border-box; }
-  body { margin: 0; }
-`;
-
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(<App />, document.getElementById("app-container"));
 registerServiceWorker();

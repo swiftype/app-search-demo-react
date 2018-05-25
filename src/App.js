@@ -1,129 +1,108 @@
 import React, { Component } from "react";
-import { Input, Provider as ThemeProvider } from "rebass";
-import styled from "styled-components";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
-import logo from "./logo.svg";
+import ScrollToTop from "./ScrollToTop";
 import Pagination from "./Pagination";
 import Results from "./Results";
 import Search from "./Search";
 import Totals from "./Totals";
 import Facets from "./Facets";
 
-const HeaderBar = styled.div`
-  color: rgb(255, 255, 255);
-  background-color: rgba(0, 0, 0, 0.75);
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  padding: 1em;
-`;
-
-const HeaderBarInner = styled.div`
-  width: 100%;
-  max-width: 1024px;
-  display: flex;
-`;
-
-const StyledInput = Input.extend`
-  background-color: white;
-  flex: 1;
-  color: black;
-`;
-
-const Title = styled.div`
-  margin-right: 20px;
-  font-size: 2em;
-`;
-
-const Body = styled.div`
-  display: flex;
-  justify-content: center;
-  font-family: "Roboto", sans-serif;
-  padding: 20px;
-`;
-
-const BodyInner = styled.div`
-  width: 100%;
-  max-width: 1024px;
-  display: flex;
-`;
-
-const LeftColumn = styled.div`
-  width: 250px;
-  margin-right: 20px;
-  border: 1px solid #eee;
-  border-radius: 4px;
-  padding: 16px;
-`;
-
-const RightColumn = styled.div`
-  flex: 1;
-`;
-
-const Logo = styled.img`
-  height: 40px;
-  margin-right: 10px;
-`;
+import packageIcon from "./icons/icon-package.svg";
+import poweredBy from "./images/powered-by@2x.png";
 
 class App extends Component {
   render() {
     return (
-      <ThemeProvider
-        theme={{
-          fonts: {
-            sans: '"Roboto", sans-serif'
-          }
-        }}
-      >
-        <Router>
+      <Router>
+        <ScrollToTop>
           <Route>
             {({ location, history }) => (
               <Search location={location} history={history}>
-                {({ query, queryState, searchActions, searchResults }) => (
-                  <div className="App">
-                    <HeaderBar>
-                      <HeaderBarInner>
-                        <Logo src={logo} alt="logo" />
-                        <Title>Package Search</Title>
-                        <StyledInput
-                          value={query}
-                          onChange={e =>
-                            searchActions.updateQuery(e.target.value)
-                          }
-                        />
-                      </HeaderBarInner>
-                    </HeaderBar>
-                    <Body>
-                      <BodyInner>
-                        <LeftColumn>
-                          <Facets
-                            facets={searchResults.facets}
-                            filters={searchResults.filters}
-                            queryState={queryState}
-                          />
-                        </LeftColumn>
-                        <RightColumn>
-                          <Totals {...searchResults.pageState} />
-                          <Results
-                            results={searchResults.results}
-                            queryState={queryState}
-                            trackClick={searchActions.trackClick}
-                          />
-                          <Pagination
-                            {...searchResults.pageState}
-                            onPage={searchActions.updatePage}
-                          />
-                        </RightColumn>
-                      </BodyInner>
-                    </Body>
+                {({
+                  query,
+                  queryState,
+                  queryClass,
+                  searchActions,
+                  searchResults
+                }) => (
+                  <div>
+                    <div className="site-background" />
+                    <div className={`search-demo live-filtering ${queryClass}`}>
+                      <div className="search-demo__content">
+                        <div class="search-demo__header">
+                          <div class="search-demo__headings">
+                            <div className="search-demo__icon-wrap">
+                              <img
+                                src={packageIcon}
+                                alt="Dog Icon"
+                                class="search-demo__icon"
+                              />
+                            </div>
+                            <h1 class="search-demo__title">Package Search</h1>
+                            <h3 class="search-demo__sub-heading powered-by">
+                              <img src={poweredBy} alt="Powered by Swiftype" />
+                            </h3>
+                          </div>
+                          <div class="search-demo__input-wrapper">
+                            <input
+                              class="search-demo__text-input"
+                              placeholder="Search node packages&#8230;"
+                              value={query}
+                              onChange={e =>
+                                searchActions.updateQuery(e.target.value)
+                              }
+                            />
+                            <input
+                              type="submit"
+                              value="Search"
+                              class="button search-demo__submit"
+                            />
+                          </div>
+                        </div>
+
+                        <div class="search-demo__body">
+                          <div class="search-results">
+                            <Facets
+                              facets={searchResults.facets}
+                              filters={searchResults.filters}
+                              queryState={queryState}
+                            />
+                            <div class="results">
+                              <div class="results__header">
+                                <Totals {...searchResults.pageState} />
+                                <div class="results__powered-by powered-by">
+                                  <img
+                                    src="https://app.swiftype.com/assets/embed/powered-by@2x.png"
+                                    alt="Powered by Swiftype"
+                                  />
+                                </div>
+                              </div>
+                              <div class="results__body">
+                                <Results
+                                  results={searchResults.results}
+                                  queryState={queryState}
+                                  trackClick={searchActions.trackClick}
+                                />
+                              </div>
+                              <div className="results__footer">
+                                <Pagination
+                                  {...searchResults.pageState}
+                                  onPage={searchActions.updatePage}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 )}
               </Search>
             )}
           </Route>
-        </Router>
-      </ThemeProvider>
+        </ScrollToTop>
+      </Router>
     );
   }
 }

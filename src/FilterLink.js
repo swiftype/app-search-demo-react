@@ -13,6 +13,7 @@ export default function FilterLink({ name, queryState, value, children }) {
         pathname: "/",
         search: "?" + queryString.stringify({ ...newQueryState, [name]: value })
       }}
+      className="facet__link"
     >
       {children}
     </Link>

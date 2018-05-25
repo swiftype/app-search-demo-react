@@ -5,29 +5,36 @@ import RemoveFilterLink from "./RemoveFilterLink";
 function Facet({ name, children }) {
   return (
     <div>
-      <em>{name}</em>
-      <ul>{children}</ul>
+      <div class="facets__title">{name}</div>
+      <ul class="facets__list">{children}</ul>
     </div>
   );
 }
 
 function FacetValue({ facetName, facetValue, queryState }) {
   return (
-    <li>
-      <FilterLink name={facetName} value={facetValue["value"]} queryState={queryState}>
+    <li class="facet">
+      <FilterLink
+        name={facetName}
+        value={facetValue["value"]}
+        queryState={queryState}
+      >
         {facetValue["value"]}
       </FilterLink>{" "}
-      ({facetValue["count"]})
+      <span class="facet__count">{facetValue["count"]}</span>
     </li>
   );
 }
 
 function SelectedFacetValue({ facetName, value, queryState }) {
   return (
-    <li>
-      {value} (<RemoveFilterLink name={facetName} queryState={queryState}>
-        Remove
-      </RemoveFilterLink>)
+    <li class="facet__selected">
+      {value}{" "}
+      <span class="facet__remove">
+        (<RemoveFilterLink name={facetName} queryState={queryState}>
+          Remove
+        </RemoveFilterLink>)
+      </span>
     </li>
   );
 }
@@ -65,28 +72,34 @@ function SingleValueFacetSelection({
 
 export default function Facets({ facets, filters, queryState }) {
   return (
-    <div>
-      <SingleValueFacetSelection
-        displayName="License"
-        facetName="license"
-        facet={facets.license}
-        filter={filters.license}
-        queryState={queryState}
-      />
-      <SingleValueFacetSelection
-        displayName="Keywords"
-        facetName="keywords"
-        facet={facets.keywords}
-        filter={filters.keywords}
-        queryState={queryState}
-      />
-      <SingleValueFacetSelection
-        displayName="Dependencies"
-        facetName="dependencies"
-        facet={facets.dependencies}
-        filter={filters.dependencies}
-        queryState={queryState}
-      />
+    <div class="facets with-counts">
+      <div class="facets__control facets__control--license">
+        <SingleValueFacetSelection
+          displayName="License"
+          facetName="license"
+          facet={facets.license}
+          filter={filters.license}
+          queryState={queryState}
+        />
+      </div>
+      <div class="facets__control facets__control--keywords">
+        <SingleValueFacetSelection
+          displayName="Keywords"
+          facetName="keywords"
+          facet={facets.keywords}
+          filter={filters.keywords}
+          queryState={queryState}
+        />
+      </div>
+      <div class="facets__control facets__control--dependencies">
+        <SingleValueFacetSelection
+          displayName="Dependencies"
+          facetName="dependencies"
+          facet={facets.dependencies}
+          filter={filters.dependencies}
+          queryState={queryState}
+        />
+      </div>
     </div>
   );
 }

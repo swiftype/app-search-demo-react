@@ -196,10 +196,12 @@ export default class Search extends Component {
       results
     } = this.state;
     const { q } = this.getQueryState();
+    const queryClass = query ? "active-search" : "";
 
     return children({
       query: q,
       queryState: this.getQueryState(),
+      queryClass: queryClass,
       searchActions: {
         trackClick: this.curriedTrackClick(query, requestId),
         updatePage: this.updatePage,
