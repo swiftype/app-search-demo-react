@@ -28,10 +28,13 @@ function FacetValue({ facetName, facetValue, queryState }) {
 
 function SelectedFacetValue({ facetName, value, queryState }) {
   return (
-    <li>
-      {value} (<RemoveFilterLink name={facetName} queryState={queryState}>
-        Remove
-      </RemoveFilterLink>)
+    <li class="facet__selected">
+      {value}{" "}
+      <span class="facet__remove">
+        (<RemoveFilterLink name={facetName} queryState={queryState}>
+          Remove
+        </RemoveFilterLink>)
+      </span>
     </li>
   );
 }

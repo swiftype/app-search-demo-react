@@ -329,6 +329,20 @@ a.subtle-link {
       content: ' results';
     }
   }
+
+  &__selected {
+    font-weight: 900;
+
+    a {
+      font-weight: 100;
+      padding: 0 2px;
+    }
+  }
+
+  &__remove {
+    color: #666;
+    margin-left: 10px;
+  }
 }
 
 
@@ -366,7 +380,7 @@ a.subtle-link {
     margin-top: 20px;
   }
 
-  .em {
+  em {
     position: relative;
     font-weight: 900;
     font-style: inherit;
@@ -421,8 +435,9 @@ a.subtle-link {
   &__details {
     margin-top: 0.5rem;
 
-    background: #fafafa;
-    border-radius: 3px;
+    background: #fdfdfd;
+    border-radius: 4px;
+    border: 1px solid #f6f6f6;
     padding: 0.5rem 1rem;
 
     > li {

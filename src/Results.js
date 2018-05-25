@@ -20,7 +20,12 @@ function Lisence({ value, children }) {
 function Description({ value, children }) {
   if (!value) return null;
   if (Array.isArray(value) && !value.length) return null;
-  return <p class="result__description">{value}</p>;
+  return (
+    <p
+      class="result__description"
+      dangerouslySetInnerHTML={createMarkup(value)}
+    />
+  );
 }
 
 function createMarkup(html) {
