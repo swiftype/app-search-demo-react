@@ -19,9 +19,10 @@
   },
   "scripts": {
     "build-css": "node-sass-chokidar src/ -o src/",
-    "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
-    "start-js": "react-scripts start",
-    "start": "npm-run-all -p watch-css start-js",
+    "watch-css":
+      "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
+    "start": "react-scripts start",
+    "start-dev": "npm-run-all -p watch-css start",
     "build-js": "react-scripts build",
     "build": "npm-run-all build-css build-js",
     "test": "react-scripts test --env=jsdom",
@@ -33,10 +34,7 @@
     "index-data": "node scripts/index-data.js"
   },
   "lint-staged": {
-    "src/**/*.{js,css}": [
-      "prettier --write",
-      "git add"
-    ]
+    "src/**/*.{js,css}": ["prettier --write", "git add"]
   },
   "devDependencies": {
     "eslint": "^4.19.1",
