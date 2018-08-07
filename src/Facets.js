@@ -5,15 +5,15 @@ import RemoveFilterLink from "./RemoveFilterLink";
 function Facet({ name, children }) {
   return (
     <div>
-      <div class="facets__title">{name}</div>
-      <ul class="facets__list">{children}</ul>
+      <div className="facets__title">{name}</div>
+      <ul className="facets__list">{children}</ul>
     </div>
   );
 }
 
 function FacetValue({ facetName, facetValue, queryState }) {
   return (
-    <li class="facet">
+    <li className="facet">
       <FilterLink
         name={facetName}
         value={facetValue["value"]}
@@ -21,16 +21,16 @@ function FacetValue({ facetName, facetValue, queryState }) {
       >
         {facetValue["value"]}
       </FilterLink>{" "}
-      <span class="facet__count">{facetValue["count"]}</span>
+      <span className="facet__count">{facetValue["count"]}</span>
     </li>
   );
 }
 
 function SelectedFacetValue({ facetName, value, queryState }) {
   return (
-    <li class="facet__selected">
+    <li className="facet__selected">
       {value}{" "}
-      <span class="facet__remove">
+      <span className="facet__remove">
         (<RemoveFilterLink name={facetName} queryState={queryState}>
           Remove
         </RemoveFilterLink>)
@@ -72,8 +72,8 @@ function SingleValueFacetSelection({
 
 export default function Facets({ facets, filters, queryState }) {
   return (
-    <div class="facets with-counts">
-      <div class="facets__control facets__control--license">
+    <div className="facets with-counts">
+      <div className="facets__control facets__control--license">
         <SingleValueFacetSelection
           displayName="License"
           facetName="license"
@@ -82,7 +82,7 @@ export default function Facets({ facets, filters, queryState }) {
           queryState={queryState}
         />
       </div>
-      <div class="facets__control facets__control--keywords">
+      <div className="facets__control facets__control--keywords">
         <SingleValueFacetSelection
           displayName="Keywords"
           facetName="keywords"
@@ -91,7 +91,7 @@ export default function Facets({ facets, filters, queryState }) {
           queryState={queryState}
         />
       </div>
-      <div class="facets__control facets__control--dependencies">
+      <div className="facets__control facets__control--dependencies">
         <SingleValueFacetSelection
           displayName="Dependencies"
           facetName="dependencies"

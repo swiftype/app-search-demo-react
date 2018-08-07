@@ -14,7 +14,7 @@ function LineItem({ label, value, children }) {
 function Lisence({ value, children }) {
   if (!value) return null;
   if (Array.isArray(value) && !value.length) return null;
-  return <div class="result__lisence">{value}</div>;
+  return <div className="result__lisence">{value}</div>;
 }
 
 function Description({ value, children }) {
@@ -22,7 +22,7 @@ function Description({ value, children }) {
   if (Array.isArray(value) && !value.length) return null;
   return (
     <p
-      class="result__description"
+      className="result__description"
       dangerouslySetInnerHTML={createMarkup(value)}
     />
   );
@@ -44,10 +44,10 @@ export default function Results({ results, queryState, trackClick }) {
   return (
     <ul>
       {results.map(result => (
-        <li class="result" key={getRaw(result, "name")}>
-          <div class="result__header">
+        <li className="result" key={getRaw(result, "name")}>
+          <div className="result__header">
             <a
-              class="result__title"
+              className="result__title"
               href={`https://www.npmjs.com/package/${getRaw(result, "name")}`}
               target="_blank"
               rel="noopener noreferrer"
@@ -57,11 +57,11 @@ export default function Results({ results, queryState, trackClick }) {
             <Lisence value={getRaw(result, "license")} />
           </div>
 
-          <div class="result__body">
+          <div className="result__body">
             <Description value={getSnippet(result, "description")} />
-            <ul class="result__details">
+            <ul className="result__details">
               <LineItem label="Version" value={getRaw(result, "version")}>
-                {value => <span class="result__version">{value}</span>}
+                {value => <span className="result__version">{value}</span>}
               </LineItem>
               <LineItem label="Home Page" value={getRaw(result, "homepage")}>
                 {value => (
@@ -112,8 +112,8 @@ export default function Results({ results, queryState, trackClick }) {
             </ul>
           </div>
 
-          <div class="result__footer">
-            <div class="result__owner">
+          <div className="result__footer">
+            <div className="result__owner">
               <LineItem label="Owners" value={getRaw(result, "owners")}>
                 {value => value.join(", ")}
               </LineItem>

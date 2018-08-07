@@ -30,23 +30,25 @@ class App extends Component {
                     <div className="site-background" />
                     <div className={`search-demo live-filtering ${queryClass}`}>
                       <div className="search-demo__content">
-                        <div class="search-demo__header">
-                          <div class="search-demo__headings">
+                        <div className="search-demo__header">
+                          <div className="search-demo__headings">
                             <div className="search-demo__icon-wrap">
                               <img
                                 src={packageIcon}
                                 alt="Dog Icon"
-                                class="search-demo__icon"
+                                className="search-demo__icon"
                               />
                             </div>
-                            <h1 class="search-demo__title">Package Search</h1>
-                            <h3 class="search-demo__sub-heading powered-by">
+                            <h1 className="search-demo__title">
+                              Package Search
+                            </h1>
+                            <h3 className="search-demo__sub-heading powered-by">
                               <img src={poweredBy} alt="Powered by Swiftype" />
                             </h3>
                           </div>
-                          <div class="search-demo__input-wrapper">
+                          <div className="search-demo__input-wrapper">
                             <input
-                              class="search-demo__text-input"
+                              className="search-demo__text-input"
                               placeholder="Search node packages&#8230;"
                               value={query}
                               onChange={e =>
@@ -56,29 +58,29 @@ class App extends Component {
                             <input
                               type="submit"
                               value="Search"
-                              class="button search-demo__submit"
+                              className="button search-demo__submit"
                             />
                           </div>
                         </div>
 
-                        <div class="search-demo__body">
-                          <div class="search-results">
+                        <div className="search-demo__body">
+                          <div className="search-results">
                             <Facets
                               facets={searchResults.facets}
                               filters={searchResults.filters}
                               queryState={queryState}
                             />
-                            <div class="results">
-                              <div class="results__header">
+                            <div className="results">
+                              <div className="results__header">
                                 <Totals {...searchResults.pageState} />
-                                <div class="results__powered-by powered-by">
+                                <div className="results__powered-by powered-by">
                                   <img
                                     src="https://app.swiftype.com/assets/embed/powered-by@2x.png"
                                     alt="Powered by Swiftype"
                                   />
                                 </div>
                               </div>
-                              <div class="results__body">
+                              <div className="results__body">
                                 <Results
                                   results={searchResults.results}
                                   queryState={queryState}

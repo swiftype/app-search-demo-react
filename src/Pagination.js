@@ -16,7 +16,7 @@ export default function Pagination({
   onPage
 }) {
   return (
-    <div class="container">
+    <div className="container">
       <RCPagination
         pageSize={pageSize}
         current={currentPage}

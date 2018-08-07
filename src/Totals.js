@@ -5,7 +5,7 @@ export default function Totals({ currentPage, pageSize, totalResults }) {
   const end = totalResults <= pageSize ? totalResults : start + pageSize - 1;
 
   return (
-    <div class="results__result-count">
+    <div className="results__result-count">
       Showing{" "}
       <strong>
         {start} - {end}
