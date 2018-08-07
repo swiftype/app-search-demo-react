@@ -31,7 +31,8 @@
     "lint": "eslint **/*.js",
     "precommit": "lint-staged",
     "init-data": "node scripts/init-data.js",
-    "index-data": "node scripts/index-data.js"
+    "index-data": "node scripts/index-data.js",
+    "postinstall": "npm-run-all build-css"
   },
   "lint-staged": {
     "src/**/*.{js,css}": ["prettier --write", "git add"]
