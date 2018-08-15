@@ -14,7 +14,7 @@ To get started, simply clone this repository and run `yarn` to install dependenc
 ```
 # Clone the repository
 git clone git@github.com:swiftype/app-search-demo-react.git
-cd react-app-search-demo
+cd app-search-demo-react
 
 # Install dependencies
 yarn
