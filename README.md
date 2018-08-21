@@ -4,8 +4,10 @@ This is the robust, fully featured React App Search demo. The demo allows the vi
 
 This README is broken down into the following sections:
 
-* [Setup](#setup) - Follow these instructions to run the example search app.
-* [Topics](#topics) - Considerations when building a React-based search app.
+* [Setup](#setup) - Follow these instructions to run the example search application.
+* [Topics](#topics) - Considerations when building a React-based search application.
+
+![Package search image](readme_images/package-search.png)
 
 ## Setup
 
@@ -364,4 +366,4 @@ For more information click through tracking and analytics, see the [documentatio
 
 ### That's it!
 
-Have fun! We hope this has been useful in helping you explore building search within Reach.
+Have fun! We hope this has been useful in helping you explore building search within React.
