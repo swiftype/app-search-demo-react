@@ -1,6 +1,7 @@
 {
   "name": "react-app-search-demo",
   "version": "0.1.0",
+  "license": "MIT",
   "private": true,
   "dependencies": {
     "dotenv": "^5.0.1",
@@ -19,7 +20,8 @@
   },
   "scripts": {
     "build-css": "node-sass-chokidar src/ -o src/",
-    "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
+    "watch-css":
+      "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
     "start": "react-scripts start",
     "start-dev": "npm-run-all -p watch-css start",
     "build-js": "react-scripts build",
@@ -34,10 +36,7 @@
     "postinstall": "npm-run-all build-css"
   },
   "lint-staged": {
-    "src/**/*.{js,css}": [
-      "prettier --write",
-      "git add"
-    ]
+    "src/**/*.{js,css}": ["prettier --write", "git add"]
   },
   "devDependencies": {
     "eslint": "^4.19.1",
