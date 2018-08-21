@@ -7,7 +7,7 @@ try {
   documents = require("../data/node-modules.json");
 } catch (e) {
   console.error(
-    "No data/node-modules.json file was found, be sure to run `yarn run-init`"
+    "No data/node-modules.json file was found, be sure to run `npm run init-data` first!"
   );
   process.exit(1);
 }
@@ -20,8 +20,8 @@ const getUrlFunction = () => {
   }
 };
 const SwiftypeAppSearchClient = require("swiftype-app-search-node");
-const accountHostKey = process.env.REACT_APP_HOST_KEY;
-const apiKey = process.env.REACT_APP_API_KEY;
+const accountHostKey = process.env.REACT_APP_HOST_IDENTIFIER;
+const apiKey = process.env.REACT_APP_PRIVATE_KEY;
 const client = new SwiftypeAppSearchClient(
   accountHostKey,
   apiKey,
