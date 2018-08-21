@@ -4,7 +4,7 @@ import queryString from "query-string";
 import * as SwiftypeAppSearch from "swiftype-app-search-javascript";
 
 const client = SwiftypeAppSearch.createClient({
-  accountHostKey: process.env.REACT_APP_HOST_KEY,
+  accountHostKey: process.env.REACT_APP_HOST_IDENTIFIER,
   apiKey: process.env.REACT_APP_SEARCH_KEY,
   engineName: "node-modules"
 });

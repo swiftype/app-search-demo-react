@@ -1,6 +1,6 @@
 # App Search React Example
 
-This example demonstrates how to build a React-based search interface using Swiftype's App Search.
+This is the robust, fully featured React App Search demo. The demo allows the visitor to search through ~9500+ `node-modles`. This README is a continuation of the _article_ - pull down the `starter` branch to work from scratch. The `solution` branch will help you wrap up the tutorial, while this README will help you extend it into a truly useful search experience.
 
 This README is broken down into the following sections:
 
@@ -9,7 +9,7 @@ This README is broken down into the following sections:
 
 ## Setup
 
-To get started, simply clone this repository and run `yarn` to install dependencies.
+To get started, simply clone this repository and run `npm` to install dependencies. We will go over some basic configuration steps, but if you are coming from the tutorial you can skip to [State Management](#state).
 
 ```
 # Clone the repository
@@ -17,28 +17,38 @@ git clone git@github.com:swiftype/app-search-demo-react.git
 cd app-search-demo-react
 
 # Install dependencies
-yarn
+npm install
 ```
 
 ### Create an Engine in App Search
 
-Before setting up this project, you will need to create a new Engine on App Search. Name it `node-modules` (this is important). Specific instructions explaining how to do this can be found in the [Getting Started](https://swiftype.com/documentation/app-search/getting-started#sign-up) guide, Steps 1 & 2.
+Before setting up this project, you will need to create a new Engine on App Search. For best results, name your Engine `node-modules`. Specific instructions explaining how to do this can be found in the [Getting Started](https://swiftype.com/documentation/app-search/getting-started#sign-up) guide, Steps 1 & 2.
 
-You'll then need to configure this project to point to your newly created Engine, so create a `.env` file at the root of this project using the following format:
+To enable Search, you will need to retrieve three credentials from your App Search account. You can find them within the dashboard [Credentials](https://app.swiftype.com/as/credentials) menu.
+
+Create a `.env` file at the root of this project using the following format:
 
 ```bash
 # .env
 
-REACT_APP_HOST_KEY=<Account key goes here>
-REACT_APP_API_KEY=<write privileged API key goes here>
-REACT_APP_SEARCH_KEY=<read-only API key goes here>
+REACT_APP_HOST_IDENTIFIER=<Host Identifier goes here, prefixed with `host-`>
+REACT_APP_API_KEY=<Your Private API Key, prefixed with `private-`>
+REACT_APP_SEARCH_KEY=<Your Public Search Key, prefixed with `public`>
 ```
 
-For more information on this, see the [Configuration](#configuring-your-search-app-with-api-credentials) section.
+You can then consume them directly by looking them up in `process.env.<name>`.
+
+```javascript
+const client = SwiftypeAppSearch.createClient({
+  accountHostKey: process.env.REACT_APP_HOST_IDENTIFIER,
+  apiKey: process.env.REACT_APP_SEARCH_KEY,
+  engineName: "node-modules"
+});
+```
 
 ### Push data to the `node-modules` Engine
 
-This project doesn't have a back-end API or database as many projects would. Instead, it simply pulls documents from a JSON file, and indexes them directly into App Search
+This project does not have a back-end API or database as many projects would. Instead, it pulls objects into a JSON file and then ingests them directly into App Search for indexing
 using the [swiftype-app-search-node](https://github.com/swiftype/swiftype-app-search-node) client.
 
 ```bash
@@ -46,78 +56,33 @@ using the [swiftype-app-search-node](https://github.com/swiftype/swiftype-app-se
 yarn run index-data
 ```
 
-Note: `data/node-modules.json` already exists, but if you'd like to refresh the data there, you can use the command `yarn run init-data` to download a fresh copy.
-
 If you return to your Engine's Dashboard, you should now see the indexed documents. Once there, you'll need to define types for your Schema. By default, everything should be of type `Text`, which is correct for the most part. The only thing you'll need to do is change the two date fields, `created` and `modified`, to `Date` types.
 
 ### Run the search app
 
-At this point, your engine is ready and all that is left to do is run the app.
+At this point, your engine is ready and all that is left to do is run the application:
 
 ```bash
-yarn start
+npm start
 ```
 
-## Topics
-
-### Indexing your data
-
-Generally speaking, indexing data (i.e. the process of populating your Engine with documents, or data) is outside the purview of a React App. You'll likely implement that as part of your backend API. However, you can see an example of how this might be accomplished using the [Node.js client](https://github.com/swiftype/swiftype-app-search-node) in this example's [index-data.js](./scripts/index-data.js) script.
-
-For more information, visit the Swiftype App Search [documentation](https://swiftype.com/documentation/app-search/guides/indexing-documents).
-
-### Accessing your data
-
-You effectively have two options for accessing data from a React app.
-
-1.  Access the data through your own API, which queries your Engine on the back end.
-2.  Access the data through Swiftype's API, querying data directly in the front end using the [swiftype-app-search-javascript](https://github.com/swiftype/swiftype-app-search-javascript) client.
-
-Typically, you'll want to go with option 2, and query Swiftype's API directly from the front-end. Swiftype's App Search API
-is highly optimized, so querying directly should give you the fastest search experience. This example app takes that approach.
-
-#### Configuring your search app with API credentials
-
-In order to use the Javascript client, you'll need to configure it with credentials. The approach we use is to leverage the environment variable replacement mechanism that create-react-app [provides](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#adding-custom-environment-variables).
-
-To accomplish this, you simply create a file named `.env` in the root of your project directory, and configure it with the "Account Key" and a read-only API key.
-
-These values can be found within your [App Search dashboard](https://app.swiftype.com/as), under the "API Keys" section. Note that by default, you should already have 1 read-only API key prefixed with "search-". For additional help locating your API keys, see the [Locating your API credentials](https://swiftype.com/documentation/app-search/getting-started#credentials) guide.
-
-```bash
-# .env
-
-REACT_APP_HOST_KEY=<key goes here>
-REACT_APP_SEARCH_KEY=<key goes here>
-```
-
-You can then consume them directly by looking them up in `process.env.<name>`.
-
-```javascript
-const client = SwiftypeAppSearch.createClient({
-  accountHostKey: process.env.REACT_APP_HOST_KEY,
-  apiKey: process.env.REACT_APP_SEARCH_KEY,
-  engineName: "node-modules"
-});
-```
-
-### State Management
+### State Management [#state]
 
 In the React ecosystem, there are many solutions for State Management. Any solution you choose will work with Swiftype; be it Redux, Mobx, or whatever else. Regardless of what you pick, here are a couple of guidelines to help.
 
 #### Manage your search state in the url
 
-A good search front-end will have stateful urls that are shareable and navigable with browser back and forward buttons. This is relatively simple to implement with [React Router](https://github.com/ReactTraining/react-router), which is what we chose to use in this example. The other package you'll see us use is [query-string](https://github.com/sindresorhus/query-string), which is a simple query string parser, which react-router lacks out of the box.
+A good search front-end will have stateful urls that are shareable and navigable with browser back and forward buttons. This is relatively simple to implement with the [React Router](https://github.com/ReactTraining/react-router), which is what we chose to use in this example. The other package you'll see us use is [query-string](https://github.com/sindresorhus/query-string), which is a simple query string parser, which react-router lacks out of the box.
 
-We want to save our state in the query string (as opposed to a hash fragment), so we use the `BrowserRouter`.
+We want to save our state in the query string - as opposed to a hash fragment - so, we use the `BrowserRouter`.
 
-Additionally, we need access to the values in our search query, and we don't want to access the browser `location` object directly, so we also include a `Route` component, which exposes this to us. Since we only have 1 route in our App, we don't configure a path match on it, we simply use the Route to get access to the `location` object.
+Additionally, we need access to the values in our search query. We do not want to access the browser `location` object directly, so we also include a `Route` component, which exposes this to us. Since we only have 1 route in our application, we do not configure a path match on it. Instead, we use the Route to get access to the `location` object.
 
-Our `Route` component also exposes the `history` object, which will allow us to update then url in reaction to user inputs.
+Our `Route` component also exposes the `history` object, which will allow us to update the URI in reaction to user inputs.
 
-`BrowserRouter` actively detects changes to the url, so any time we use `history.pushState` to push new search selections to the url, the props will change on our app, forcing a re-render. This means that we can simply implement our search queries in `componentDidMount` and `componentDidUpdate`.
+`BrowserRouter` actively detects changes to the URI, so any time we use `history.pushState` to push new search selections to the URI, the props will change on our application, forcing a re-render. This means that we can implement our search queries in `componentDidMount` and `componentDidUpdate`.
 
-In other words, if we were managing state in local component state, we'd be managing state like this:
+In other words, if we were managing state in local component state, we would be managing state like this:
 
 ```javascript
 // Update state
@@ -145,9 +110,9 @@ console.log(queryString.parse(this.props.location.search).query);
 // 'search term'
 ```
 
-Here's a simple example of what it looks like all put together:
+Here is a simple example of what it looks like all put together:
 
-```jsx
+```javascript
 // index.js
 
 import { BrowserRouter as Router, Route } from "react-router-dom";
@@ -214,13 +179,15 @@ render() {
 
 #### Centralize your search state and logic
 
-Using a central store is a smart decision for a search interface. Search screens often require data in many different disconnected pieces of the view (think totals, paging, filters, etc.), so having this data in one central store is very clean and ensures data is accessible by all of these pieces.
+Using a central store is a smart decision for a search interface. Search screens often require data in many different disconnected pieces of the view, like totals, paging, filters, etc... Having this data in one central store is very clean and ensures data is accessible by all of these pieces.
 
-You may choose to use something like Redux or Mobx, which would be excellent choices. For our app, which is fairly simple, we chose to simply use a single, high-level component to manage our store and actions. See [Search.js](src/Search.js). This is a simplistic approach, that simply encapsulates all search actions and state. It uses the Render Props pattern (https://reactjs.org/docs/render-props.html) to pass these actions and state down to individual components in the UI.
+You may choose to use something like Redux or Mobx, either being a good choice. For our application, we chose to use a single, high-level component to manage our store and actions. See [Search.js](src/Search.js).
 
-ex.
+This is a simplistic approach that encapsulates all search actions and state. It uses the Render Props pattern (https://reactjs.org/docs/render-props.html) to pass these actions and state down to individual components in the UI.
 
-```jsx
+For example:
+
+```javascript
 <Search>
   {({ query, searchActions, searchResults }) => (
     <div>
@@ -245,11 +212,11 @@ ex.
 There's no magic involved in creating a search box for App Search. For the best experience, a "live" search
 box is often the best choice.
 
-By "live", we simply mean a search box that reacts to user input "live" as a user types. That could be something like we have in our Example, where we are showing the results in the page body below the search box, or it could be something like a type-ahead search box. In either case, the approach is the same:
+By "live", we simply mean a search box that reacts to user input "live" as a user types. That could be something like we have in our example, where we are showing the results in the page body below the search box. Or, it could be something like a type-ahead search box. In either case, the approach is the same...
 
 1.  Create an input box that implements an `onChange` handler and shows the current query value
 
-    ```jsx
+    ```javascript
     export default function SearchBox({ query, onChange }) {
       return <input type="text" value={query} onChange={onChange} />;
     }
@@ -257,7 +224,7 @@ By "live", we simply mean a search box that reacts to user input "live" as a use
 
 2.  Add a [central Search store](#centralize-your-search-state-and-logic), to house your query logic
 
-    ```jsx
+    ```javascript
     <Search>
       {({ query, searchActions }) => (
         <div>
@@ -271,7 +238,7 @@ By "live", we simply mean a search box that reacts to user input "live" as a use
 
     Again, that could be in the page body:
 
-    ```jsx
+    ```javascript
     <Search>
       {({ query, searchActions, results }) => (
         <div>
@@ -284,7 +251,7 @@ By "live", we simply mean a search box that reacts to user input "live" as a use
 
     Or it could be part of an autocomplete, rendered in your SearchBox
 
-    ```jsx
+    ```javascript
     <Search>
       {({ query, searchActions, searchResults }) => (
         <div>
@@ -298,13 +265,9 @@ By "live", we simply mean a search box that reacts to user input "live" as a use
     </Search>
     ```
 
-#### Debouncing
-
-Implementing a "live" search box will generate a large volume of requests to the server. To reduce the number of requests sent to the server, it can be useful to implement a `debounce` on your `onChange` handler. We do this using [lodash](https://lodash.com/docs/4.17.10#debounce).
-
 #### Type-ahead
 
-There are many popular "auto-complete", or "type-ahead" components for React that you may be able to use with Swiftype. We haven't evaluated them for use yet, but any Component that implements a stateless interface that allows you to pass in everything as props as we do above should work well.
+There are many popular "auto-complete", or "type-ahead" components for React that you may be able to use with Swiftype. We have not evaluated them for use yet, but any Component that implements a stateless interface that allows you to pass in everything as props as we do above should work well.
 
 ### Paging
 
@@ -318,7 +281,7 @@ Note: The App Search API currently only supports up to 100 pages, so be sure to 
 
 Filtering lets us further refine search query results. Our approach, as discussed in the [State Management](#state-management) section, is to store all search state in the url.
 
-For example, in the following url, we are querying by the term "express", and then filtering the results to include only packages that have "node" listed in their "dependencies", and a "license" of "MIT".
+For example, in the following URI, we are querying by the term "express", and then filtering the results to include only packages that have "node" listed in their "dependencies", and a "license" of "MIT".
 
 ```
 http://localhost:3000/?q=express&dependencies=node&license=MIT
@@ -341,14 +304,14 @@ We do this through two components, which are simple wrappers around React Router
 
 [FilterLink](src/FilterLink.js)
 
-```jsx
+```javascript
 // This simply creates a link with `dependencies=node` appended to the query string
 <FilterLink name="dependencies" value="node" queryState={queryState}>>
 ```
 
 [RemoveFilterLink](src/RemoveFilterLink.js)
 
-```jsx
+```javascript
 // This simply creates a link with `dependencies=node` removed from the query string
 <RemoveFilterLink name="dependencies" value="node" queryState={queryState}>>
 ```
@@ -376,7 +339,7 @@ Faceted Search takes the idea of filtering one step further. In our example app,
 }
 ```
 
-This in turn gives us all the information we require to build the Faceted Search navigation in the left hand-side of the screen. From there, we simply use our `FilterLink` and `RemoveFilterLink` components from the [Filtering](#filtering) section to turn the values into links.
+This in turn gives us all the information we require to build the Faceted Search navigation in the left hand-side of the screen. From there, we use our `FilterLink` and `RemoveFilterLink` components from the [Filtering](#filtering) section to turn the values into links.
 
 The code for this can be found in our [Facets](src/Facets.js) component.
 
@@ -398,3 +361,7 @@ In our implementation, we do the following:
 2.  Add an `onClick` handler to individual result items, which calls `trackClick` with the corresponding result ID. See [Results.js](src/Results.js).
 
 For more information click through tracking and analytics, see the [documentation](https://swiftype.com/documentation/app-search/api/clickthrough).
+
+### That's it!
+
+Have fun! We hope this has been useful in helping you explore building search within Reach.
