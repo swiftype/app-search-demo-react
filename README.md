@@ -1,4 +1,4 @@
-# App Search React Example
+# App Search React Demo
 
 This is the robust, fully featured React App Search demo. The demo allows the visitor to search through ~9500+ `node-modles`. This README is a continuation of the _article_ - pull down the `starter` branch to work from scratch. The `solution` branch will help you wrap up the tutorial, while this README will help you extend it into a truly useful search experience.
 
