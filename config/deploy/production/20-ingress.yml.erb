@@ -1,0 +1,11 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+
+metadata:
+  name: external-ip
+  namespace: <%= app_name %>
+
+spec:
+  backend:
+    serviceName: node-backend
+    servicePort: 3000

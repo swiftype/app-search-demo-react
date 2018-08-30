@@ -1,0 +1,5 @@
+/.git
+/node_modules
+/ci_state
+/data
+/build

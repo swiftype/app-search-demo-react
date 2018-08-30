@@ -1,0 +1,45 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+
+metadata:
+  name: node-backend
+  namespace: <%= app_name %>
+
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: node-backend
+    spec:
+      imagePullSecrets:
+        - name: elastic-prod-registry
+
+      containers:
+        - name: rack-backend
+          image: docker.elastic.co/swiftype/<%= app_name %>:<%= current_sha %>
+          env:
+            - name: NODE_ENV
+              value: "production"
+
+            - name: HOSTNAME
+              value: packagehunt.swiftype.info
+
+            - name: REACT_APP_HOST_IDENTIFIER
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: REACT_APP_HOST_IDENTIFIER
+
+            - name: REACT_APP_SEARCH_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: REACT_APP_SEARCH_KEY
+
+          ports:
+            - containerPort: 3000
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: node-backend
+  namespace: <%= app_name %>
+
+spec:
+  selector:
+    app: node-backend
+  ports:
+    - name: http
+      protocol: TCP
+      port: 3000
+  type: NodePort
