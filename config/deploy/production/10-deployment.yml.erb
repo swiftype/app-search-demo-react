@@ -16,7 +16,7 @@ spec:
         - name: elastic-prod-registry
 
       containers:
-        - name: rack-backend
+        - name: node-backend
           image: docker.elastic.co/swiftype/<%= app_name %>:<%= current_sha %>
           env:
             - name: NODE_ENV
