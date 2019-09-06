@@ -1,4 +1,6 @@
-**Update** - Looking to use App Search or Site Search with React? Take a look at our Search UI library: https://github.com/elastic/search-ui.
+> **⚠️ This repository is deprecated ⚠️**
+>
+> **Looking to use App Search or Site Search with React? Take a look at our [Search UI](https://github.com/elastic/search-ui) library. Thank you! - Elastic**
 
 
 # App Search React Demo
